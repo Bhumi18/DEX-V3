@@ -9,7 +9,7 @@ import { WETH9 } from './weth9'
  */
 export class Ether extends NativeCurrency {
   protected constructor(chainId: number) {
-    super(chainId, 18, 'SYS', 'Syscoin')
+    super(chainId, 18, 'ETH', 'ETHER')
   }
 
   public get wrapped(): Token {
