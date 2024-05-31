@@ -1,4 +1,4 @@
-import { BigintIsh, MaxUint256, Percent, Price, CurrencyAmount, Token } from '@pollum-io/sdk-core'
+import { BigintIsh, MaxUint256, Percent, Price, CurrencyAmount, Token } from 'sdkcore18'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ZERO } from '../internalConstants'

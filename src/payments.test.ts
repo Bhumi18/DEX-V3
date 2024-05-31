@@ -1,4 +1,4 @@
-import { Percent, Token } from '@pollum-io/sdk-core'
+import { Percent, Token } from 'sdkcore18'
 import JSBI from 'jsbi'
 import { Payments } from './payments'
 
@@ -10,7 +10,7 @@ const feeOptions = {
   recipient: '0x0000000000000000000000000000000000000009'
 }
 
-const token = new Token(1, '0x0000000000000000000000000000000000000001', 18, 't0', 'token0')
+const token = new Token(919, '0x0000000000000000000000000000000000000001', 18, 't0', 'token0')
 
 describe('Payments', () => {
   describe('#encodeUnwrapWETH9', () => {

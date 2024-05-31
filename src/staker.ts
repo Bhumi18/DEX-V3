@@ -1,7 +1,7 @@
-import { BigintIsh, Token, validateAndParseAddress } from '@pollum-io/sdk-core'
+import { BigintIsh, Token, validateAndParseAddress } from 'sdkcore18'
 import { MethodParameters, toHex } from './utils/calldata'
 import { defaultAbiCoder, Interface } from '@ethersproject/abi'
-import IPegasysV3Staker from '@pollum-io/v3-staker/artifacts/contracts/PegasysV3Staker.sol/PegasysV3Staker.json'
+import IUniswapV3Staker from '@uniswap/v3-staker/artifacts/contracts/interfaces/IUniswapV3Staker.sol/IUniswapV3Staker.json'
 import { Pool } from './entities'
 import { Multicall } from './multicall'
 
@@ -67,7 +67,7 @@ export interface WithdrawOptions {
 }
 
 export abstract class Staker {
-  public static INTERFACE: Interface = new Interface(IPegasysV3Staker.abi)
+  public static INTERFACE: Interface = new Interface(IUniswapV3Staker.abi)
 
   protected constructor() { }
   private static INCENTIVE_KEY_ABI =

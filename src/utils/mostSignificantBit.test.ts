@@ -1,4 +1,4 @@
-import { MaxUint256 } from '@pollum-io/sdk-core'
+import { MaxUint256 } from 'sdkcore18'
 import JSBI from 'jsbi'
 import { ONE } from '../internalConstants'
 import { mostSignificantBit } from './mostSignificantBit'
