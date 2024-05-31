@@ -1,7 +1,8 @@
 import { Interface } from '@ethersproject/abi'
-import { BigintIsh } from '@pollum-io/sdk-core'
-import { abi } from '@pollum-io/swap-router-contracts/artifacts/contracts/interfaces/IMulticallExtended.sol/IMulticallExtended.json'
-import { Multicall, toHex } from '@pollum-io/v2-sdk'
+import { BigintIsh } from 'sdkcore18'
+// import { abi } from '@pollum-io/swap-router-contracts/artifacts/contracts/interfaces/IMulticallExtended.sol/IMulticallExtended.json'
+import { abi } from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/IMulticallExtended.sol/IMulticallExtended.json'
+import { Multicall, toHex } from 'v3sdk18'
 
 // deadline or previousBlockhash
 export type Validation = BigintIsh | string

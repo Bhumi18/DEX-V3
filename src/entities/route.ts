@@ -1,12 +1,12 @@
 // entities/route.ts
 
-import { Route as V1RouteSDK, Pair } from '@pollum-io/v1-sdk'
-import { Route as V2RouteSDK, Pool } from '@pollum-io/v2-sdk'
+// import { Route as V1RouteSDK, Pair } from '@pollum-io/v1-sdk'
+import { Route as V2RouteSDK, Pool } from 'v3sdk18'
 import { Protocol } from './protocol'
-import { Currency, Price, Token } from '@pollum-io/sdk-core'
-import { MixedRouteSDK } from './mixedRoute/route'
+import { Currency, Price, Token } from 'sdkcore18'
+// import { MixedRouteSDK } from './mixedRoute/route'
 
-export interface IRoute<TInput extends Currency, TOutput extends Currency, TPool extends Pool | Pair> {
+export interface IRoute<TInput extends Currency, TOutput extends Currency, TPool extends Pool> {
   protocol: Protocol
   // array of pools if v2 or pairs if v2
   pools: TPool[]
@@ -16,26 +16,25 @@ export interface IRoute<TInput extends Currency, TOutput extends Currency, TPool
   output: TOutput
 }
 
-// V1 route wrapper
-export class RouteV1<TInput extends Currency, TOutput extends Currency>
-  extends V1RouteSDK<TInput, TOutput>
-  implements IRoute<TInput, TOutput, Pair>
-{
-  public readonly protocol: Protocol = Protocol.V1
-  public readonly pools: Pair[]
+// // V1 route wrapper
+// export class RouteV1<TInput extends Currency, TOutput extends Currency>
+//   extends V1RouteSDK<TInput, TOutput>
+//   implements IRoute<TInput, TOutput, Pair>
+// {
+//   public readonly protocol: Protocol = Protocol.V1
+//   public readonly pools: Pair[]
 
-  constructor(v1Route: V1RouteSDK<TInput, TOutput>) {
-    super(v1Route.pairs, v1Route.input, v1Route.output)
-    this.pools = this.pairs
-  }
-}
+//   constructor(v1Route: V1RouteSDK<TInput, TOutput>) {
+//     super(v1Route.pairs, v1Route.input, v1Route.output)
+//     this.pools = this.pairs
+//   }
+// }
 
 // V2 route wrapper
 export class RouteV2<TInput extends Currency, TOutput extends Currency>
   extends V2RouteSDK<TInput, TOutput>
-  implements IRoute<TInput, TOutput, Pool>
-{
-  public readonly protocol: Protocol = Protocol.V2
+  implements IRoute<TInput, TOutput, Pool> {
+  public readonly protocol: Protocol = Protocol.V3
   public readonly path: Token[]
 
   constructor(v2Route: V2RouteSDK<TInput, TOutput>) {
@@ -44,14 +43,14 @@ export class RouteV2<TInput extends Currency, TOutput extends Currency>
   }
 }
 
-// Mixed route wrapper
-export class MixedRoute<TInput extends Currency, TOutput extends Currency>
-  extends MixedRouteSDK<TInput, TOutput>
-  implements IRoute<TInput, TOutput, Pool | Pair>
-{
-  public readonly protocol: Protocol = Protocol.MIXED
+// // Mixed route wrapper
+// export class MixedRoute<TInput extends Currency, TOutput extends Currency>
+//   extends MixedRouteSDK<TInput, TOutput>
+//   implements IRoute<TInput, TOutput, Pool | Pair>
+// {
+//   public readonly protocol: Protocol = Protocol.MIXED
 
-  constructor(mixedRoute: MixedRouteSDK<TInput, TOutput>) {
-    super(mixedRoute.pools, mixedRoute.input, mixedRoute.output)
-  }
-}
+//   constructor(mixedRoute: MixedRouteSDK<TInput, TOutput>) {
+//     super(mixedRoute.pools, mixedRoute.input, mixedRoute.output)
+//   }
+// }

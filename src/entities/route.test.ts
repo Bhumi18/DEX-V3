@@ -1,16 +1,16 @@
-import { Ether, Token, WETH9, CurrencyAmount } from '@pollum-io/sdk-core'
-import { Route as V2RouteSDK, Pool, FeeAmount, TickMath, encodeSqrtRatioX96 } from '@pollum-io/v2-sdk'
+import { Ether, Token, WETH9 } from 'sdkcore18'
+import { Route as V2RouteSDK, Pool, FeeAmount, TickMath, encodeSqrtRatioX96 } from 'v3sdk18'
 import { RouteV2 } from './route'
 import { Protocol } from './protocol'
-import { Route as V1RouteSDK, Pair } from '@pollum-io/v1-sdk'
-import { RouteV1 } from './route'
+// import { Route as V1RouteSDK, Pair } from '@pollum-io/v1-sdk'
+// import { RouteV1 } from './route'
 
 describe('RouteV2', () => {
-  const ETHER = Ether.onChain(1)
-  const token0 = new Token(1, '0x0000000000000000000000000000000000000001', 18, 't0')
-  const token1 = new Token(1, '0x0000000000000000000000000000000000000002', 18, 't1')
-  const token2 = new Token(1, '0x0000000000000000000000000000000000000003', 18, 't2')
-  const weth = WETH9[1]
+  const ETHER = Ether.onChain(919)
+  const token0 = new Token(919, '0x0000000000000000000000000000000000000001', 18, 't0')
+  const token1 = new Token(919, '0x0000000000000000000000000000000000000002', 18, 't1')
+  const token2 = new Token(919, '0x0000000000000000000000000000000000000003', 18, 't2')
+  const weth = WETH9[919]
 
   const pool_0_1 = new Pool(token0, token1, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
   const pool_0_weth = new Pool(token0, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
@@ -31,7 +31,7 @@ describe('RouteV2', () => {
   it('successfully assigns the protocol', () => {
     const routeOriginal = new V2RouteSDK([pool_0_1], token0, token1)
     const route = new RouteV2(routeOriginal)
-    expect(route.protocol).toEqual(Protocol.V2)
+    expect(route.protocol).toEqual(Protocol.V3)
   })
 
   it('inherits parameters from extended route class', () => {
@@ -178,63 +178,63 @@ describe('RouteV2', () => {
   })
 })
 
-describe('RouteV1', () => {
-  const ETHER = Ether.onChain(1)
-  const token0 = new Token(1, '0x0000000000000000000000000000000000000001', 18, 't0')
-  const token1 = new Token(1, '0x0000000000000000000000000000000000000002', 18, 't1')
-  const weth = WETH9[1]
-  const pair_0_1 = new Pair(CurrencyAmount.fromRawAmount(token0, '100'), CurrencyAmount.fromRawAmount(token1, '200'))
-  const pair_0_weth = new Pair(CurrencyAmount.fromRawAmount(token0, '100'), CurrencyAmount.fromRawAmount(weth, '100'))
-  const pair_1_weth = new Pair(CurrencyAmount.fromRawAmount(token1, '175'), CurrencyAmount.fromRawAmount(weth, '100'))
+// describe('RouteV1', () => {
+//   const ETHER = Ether.onChain(919)
+//   const token0 = new Token(919, '0x0000000000000000000000000000000000000001', 18, 't0')
+//   const token1 = new Token(919, '0x0000000000000000000000000000000000000002', 18, 't1')
+//   const weth = WETH9[919]
+//   const pair_0_1 = new Pair(CurrencyAmount.fromRawAmount(token0, '100'), CurrencyAmount.fromRawAmount(token1, '200'))
+//   const pair_0_weth = new Pair(CurrencyAmount.fromRawAmount(token0, '100'), CurrencyAmount.fromRawAmount(weth, '100'))
+//   const pair_1_weth = new Pair(CurrencyAmount.fromRawAmount(token1, '175'), CurrencyAmount.fromRawAmount(weth, '100'))
 
-  it('successfully assigns the protocol', () => {
-    const routeOriginal = new V1RouteSDK([pair_0_1], token0, token1)
-    const route = new RouteV1(routeOriginal)
-    expect(route.protocol).toEqual(Protocol.V1)
-  })
+//   it('successfully assigns the protocol', () => {
+//     const routeOriginal = new V1RouteSDK([pair_0_1], token0, token1)
+//     const route = new RouteV1(routeOriginal)
+//     expect(route.protocol).toEqual(Protocol.V1)
+//   })
 
-  it('inherits parameters from extended route class', () => {
-    const routeOriginal = new V1RouteSDK([pair_0_1], token0, token1)
-    const route = new RouteV1(routeOriginal)
-    expect(route.pools).toEqual(routeOriginal.pairs)
-    expect(route.path).toEqual(routeOriginal.path)
-    expect(route.input).toEqual(routeOriginal.input)
-    expect(route.output).toEqual(routeOriginal.output)
-    expect(route.midPrice).toEqual(routeOriginal.midPrice)
-    expect(route.chainId).toEqual(routeOriginal.chainId)
-  })
+//   it('inherits parameters from extended route class', () => {
+//     const routeOriginal = new V1RouteSDK([pair_0_1], token0, token1)
+//     const route = new RouteV1(routeOriginal)
+//     expect(route.pools).toEqual(routeOriginal.pairs)
+//     expect(route.path).toEqual(routeOriginal.path)
+//     expect(route.input).toEqual(routeOriginal.input)
+//     expect(route.output).toEqual(routeOriginal.output)
+//     expect(route.midPrice).toEqual(routeOriginal.midPrice)
+//     expect(route.chainId).toEqual(routeOriginal.chainId)
+//   })
 
-  it('constructs a path from the tokens', () => {
-    const routeOriginal = new V1RouteSDK([pair_0_1], token0, token1)
-    const route = new RouteV1(routeOriginal)
-    expect(route.pairs).toEqual([pair_0_1])
-    expect(route.path).toEqual([token0, token1])
-    expect(route.input).toEqual(token0)
-    expect(route.output).toEqual(token1)
-    expect(route.chainId).toEqual(1)
-  })
+//   it('constructs a path from the tokens', () => {
+//     const routeOriginal = new V1RouteSDK([pair_0_1], token0, token1)
+//     const route = new RouteV1(routeOriginal)
+//     expect(route.pairs).toEqual([pair_0_1])
+//     expect(route.path).toEqual([token0, token1])
+//     expect(route.input).toEqual(token0)
+//     expect(route.output).toEqual(token1)
+//     expect(route.chainId).toEqual(1)
+//   })
 
-  it('can have a token as both input and output', () => {
-    const routeOriginal = new V1RouteSDK([pair_0_weth, pair_0_1, pair_1_weth], weth, weth)
-    const route = new RouteV1(routeOriginal)
-    expect(route.pairs).toEqual([pair_0_weth, pair_0_1, pair_1_weth])
-    expect(route.input).toEqual(weth)
-    expect(route.output).toEqual(weth)
-  })
+//   it('can have a token as both input and output', () => {
+//     const routeOriginal = new V1RouteSDK([pair_0_weth, pair_0_1, pair_1_weth], weth, weth)
+//     const route = new RouteV1(routeOriginal)
+//     expect(route.pairs).toEqual([pair_0_weth, pair_0_1, pair_1_weth])
+//     expect(route.input).toEqual(weth)
+//     expect(route.output).toEqual(weth)
+//   })
 
-  it('supports ether input', () => {
-    const routeOriginal = new V1RouteSDK([pair_0_weth], ETHER, token0)
-    const route = new RouteV1(routeOriginal)
-    expect(route.pairs).toEqual([pair_0_weth])
-    expect(route.input).toEqual(ETHER)
-    expect(route.output).toEqual(token0)
-  })
+//   it('supports ether input', () => {
+//     const routeOriginal = new V1RouteSDK([pair_0_weth], ETHER, token0)
+//     const route = new RouteV1(routeOriginal)
+//     expect(route.pairs).toEqual([pair_0_weth])
+//     expect(route.input).toEqual(ETHER)
+//     expect(route.output).toEqual(token0)
+//   })
 
-  it('supports ether output', () => {
-    const routeOriginal = new V1RouteSDK([pair_0_weth], token0, ETHER)
-    const route = new RouteV1(routeOriginal)
-    expect(route.pairs).toEqual([pair_0_weth])
-    expect(route.input).toEqual(token0)
-    expect(route.output).toEqual(ETHER)
-  })
-})
+//   it('supports ether output', () => {
+//     const routeOriginal = new V1RouteSDK([pair_0_weth], token0, ETHER)
+//     const route = new RouteV1(routeOriginal)
+//     expect(route.pairs).toEqual([pair_0_weth])
+//     expect(route.input).toEqual(token0)
+//     expect(route.output).toEqual(ETHER)
+//   })
+// })

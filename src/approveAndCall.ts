@@ -1,14 +1,15 @@
 import { Interface } from '@ethersproject/abi'
 import invariant from 'tiny-invariant'
-import { abi } from '@pollum-io/swap-router-contracts/artifacts/contracts/interfaces/IApproveAndCall.sol/IApproveAndCall.json'
-import { Currency, Percent, Token } from '@pollum-io/sdk-core'
+// import { abi } from '@pollum-io/swap-router-contracts/artifacts/contracts/interfaces/IApproveAndCall.sol/IApproveAndCall.json'
+import { abi } from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/IApproveAndCall.sol/IApproveAndCall.json'
+import { Currency, Percent, Token } from 'sdkcore18'
 import {
   MintSpecificOptions,
   IncreaseSpecificOptions,
   NonfungiblePositionManager,
   Position,
   toHex,
-} from '@pollum-io/v2-sdk'
+} from 'v3sdk18'
 import JSBI from 'jsbi'
 
 // condensed version of v2-sdk AddLiquidityOptions containing only necessary swap + add attributes

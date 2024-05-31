@@ -1,7 +1,7 @@
 import { pack } from '@ethersproject/solidity'
-import { Currency, Token } from '@pollum-io/sdk-core'
-import { Pool } from '@pollum-io/v2-sdk'
-import { Pair } from '@pollum-io/v1-sdk'
+import { Currency, Token } from 'sdkcore18'
+import { Pool } from 'v3sdk18'
+// import { Pair } from '@pollum-io/v1-sdk'
 import { MixedRouteSDK } from '../entities/mixedRoute/route'
 import { V1_FEE_PATH_PLACEHOLDER } from '../constants'
 
@@ -17,7 +17,7 @@ export function encodeMixedRouteToPath(route: MixedRouteSDK<Currency, Currency>)
   const { path, types } = route.pools.reduce(
     (
       { inputToken, path, types }: { inputToken: Token; path: (string | number)[]; types: string[] },
-      pool: Pool | Pair,
+      pool: Pool,
       index
     ): { inputToken: Token; path: (string | number)[]; types: string[] } => {
       const outputToken: Token = pool.token0.equals(inputToken) ? pool.token1 : pool.token0

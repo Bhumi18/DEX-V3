@@ -1,6 +1,6 @@
-import { Currency, Token } from '@pollum-io/sdk-core'
-import { Pair } from '@pollum-io/v1-sdk'
-import { Pool } from '@pollum-io/v2-sdk'
+import { Currency, Token } from 'sdkcore18'
+// import { Pair } from '@pollum-io/v1-sdk'
+import { Pool } from 'v3sdk18'
 import { MixedRouteSDK } from '../entities/mixedRoute/route'
 
 /**
@@ -8,19 +8,19 @@ import { MixedRouteSDK } from '../entities/mixedRoute/route'
  * @param route
  * @returns a nested array of Pools or Pairs in the order of the route
  */
-export const partitionMixedRouteByProtocol = (route: MixedRouteSDK<Currency, Currency>): (Pool | Pair)[][] => {
+export const partitionMixedRouteByProtocol = (route: MixedRouteSDK<Currency, Currency>): (Pool)[][] => {
   let acc = []
 
   let left = 0
   let right = 0
   while (right < route.pools.length) {
-    if (
-      (route.pools[left] instanceof Pool && route.pools[right] instanceof Pair) ||
-      (route.pools[left] instanceof Pair && route.pools[right] instanceof Pool)
-    ) {
-      acc.push(route.pools.slice(left, right))
-      left = right
-    }
+    // if (
+    //   (route.pools[left] instanceof Pool && route.pools[right] instanceof Pair) ||
+    //   (route.pools[left] instanceof Pair && route.pools[right] instanceof Pool)
+    // ) {
+    //   acc.push(route.pools.slice(left, right))
+    //   left = right
+    // }
     // seek forward with right pointer
     right++
     if (right === route.pools.length) {
@@ -37,9 +37,9 @@ export const partitionMixedRouteByProtocol = (route: MixedRouteSDK<Currency, Cur
  * @param firstInputToken
  * @returns the output token of the last pool in the array
  */
-export const getOutputOfPools = (pools: (Pool | Pair)[], firstInputToken: Token): Token => {
+export const getOutputOfPools = (pools: (Pool)[], firstInputToken: Token): Token => {
   const { inputToken: outputToken } = pools.reduce(
-    ({ inputToken }, pool: Pool | Pair): { inputToken: Token } => {
+    ({ inputToken }, pool: Pool): { inputToken: Token } => {
       if (!pool.involvesToken(inputToken)) throw new Error('PATH')
       const outputToken: Token = pool.token0.equals(inputToken) ? pool.token1 : pool.token0
       return {

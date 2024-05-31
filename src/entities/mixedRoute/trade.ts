@@ -1,6 +1,6 @@
-import { Currency, Fraction, Percent, Price, sortedInsert, CurrencyAmount, TradeType, Token } from '@pollum-io/sdk-core'
-import { Pair } from '@pollum-io/v1-sdk'
-import { BestTradeOptions, Pool } from '@pollum-io/v2-sdk'
+import { Currency, Fraction, Percent, Price, sortedInsert, CurrencyAmount, TradeType, Token } from 'sdkcore18'
+// import { Pair } from '@pollum-io/v1-sdk'
+import { BestTradeOptions, Pool } from 'v3sdk18'
 import invariant from 'tiny-invariant'
 import { ONE, ZERO } from '../../constants'
 import { MixedRouteSDK } from './route'
@@ -360,9 +360,9 @@ export class MixedRouteTrade<TInput extends Currency, TOutput extends Currency, 
     const poolAddressSet = new Set<string>()
     for (const { route } of routes) {
       for (const pool of route.pools) {
-        pool instanceof Pool
-          ? poolAddressSet.add(Pool.getAddress(pool.token0, pool.token1, pool.fee))
-          : poolAddressSet.add(Pair.getAddress(pool.token0, pool.token1))
+        // pool instanceof Pool ?
+        poolAddressSet.add(Pool.getAddress(pool.token0, pool.token1, pool.fee))
+        // : poolAddressSet.add(Pair.getAddress(pool.token0, pool.token1))
       }
     }
 
@@ -430,12 +430,12 @@ export class MixedRouteTrade<TInput extends Currency, TOutput extends Currency, 
    * @returns The exact in trade
    */
   public static async bestTradeExactIn<TInput extends Currency, TOutput extends Currency>(
-    pools: (Pool | Pair)[],
+    pools: (Pool)[],
     currencyAmountIn: CurrencyAmount<TInput>,
     currencyOut: TOutput,
     { maxNumResults = 3, maxHops = 3 }: BestTradeOptions = {},
     // used in recursion.
-    currentPools: (Pool | Pair)[] = [],
+    currentPools: (Pool)[] = [],
     nextAmountIn: CurrencyAmount<Currency> = currencyAmountIn,
     bestTrades: MixedRouteTrade<TInput, TOutput, TradeType.EXACT_INPUT>[] = []
   ): Promise<MixedRouteTrade<TInput, TOutput, TradeType.EXACT_INPUT>[]> {
@@ -449,9 +449,9 @@ export class MixedRouteTrade<TInput extends Currency, TOutput extends Currency, 
       const pool = pools[i]
       // pool irrelevant
       if (!pool.token0.equals(amountIn.currency) && !pool.token1.equals(amountIn.currency)) continue
-      if (pool instanceof Pair) {
-        if ((pool as Pair).reserve0.equalTo(ZERO) || (pool as Pair).reserve1.equalTo(ZERO)) continue
-      }
+      // if (pool instanceof Pair) {
+      //   if ((pool as Pair).reserve0.equalTo(ZERO) || (pool as Pair).reserve1.equalTo(ZERO)) continue
+      // }
 
       let amountOut: CurrencyAmount<Token>
       try {

@@ -1,10 +1,10 @@
 import invariant from 'tiny-invariant'
 
-import { Currency, Price, Token } from '@pollum-io/sdk-core'
-import { Pool } from '@pollum-io/v2-sdk'
-import { Pair } from '@pollum-io/v1-sdk'
+import { Currency, Price, Token } from 'sdkcore18'
+import { Pool } from 'v3sdk18'
+// import { Pair } from '@pollum-io/v1-sdk'
 
-type TPool = Pair | Pool
+type TPool = Pool
 
 /**
  * Represents a list of pools or pairs through which a swap can occur
