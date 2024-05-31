@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Ether } from '@pollum-io/sdk-core'
+import { Currency, CurrencyAmount, Ether } from 'sdkcore18'
 
 export function getNativeCurrencyValue(currencyValues: CurrencyAmount<Currency>[]): CurrencyAmount<Currency> {
   for (const value of currencyValues) {

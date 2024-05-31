@@ -1,6 +1,6 @@
 {
-  "name": "@pollum-io/universal-router-sdk",
-  "version": "0.0.2",
+  "name": "universalroutersdk18",
+  "version": "0.0.1",
   "description": "sdk for integrating with the Universal Router contracts",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -49,12 +49,11 @@
     "typescript": "^4.3.3"
   },
   "dependencies": {
-    "@pollum-io/universal-router": "0.0.3",
+    "@uniswap/universal-router": "^1.6.0",
     "@uniswap/permit2-sdk": "^1.2.0",
-    "@pollum-io/router-sdk": "0.0.2",
-    "@pollum-io/sdk-core": "0.0.3",
-    "@pollum-io/v1-sdk": "0.0.2",
-    "@pollum-io/v2-sdk": "0.0.2",
+    "routersdk18": "0.0.1",
+    "sdkcore18": "0.0.1",
+    "v3sdk18": "0.0.1",
     "bignumber.js": "^9.0.2",
     "ethers": "^5.3.1"
   },
