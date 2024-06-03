@@ -23,7 +23,7 @@ export interface TokenValidationResults {
   getValidationByToken(token: Token): TokenValidationResult | undefined;
 }
 
-const TOKEN_VALIDATOR_ADDRESS = '0xb5ee1690b7dcc7859771148d0889be838fe108e0'; // eth mainnet
+const TOKEN_VALIDATOR_ADDRESS = '0xFeD9821679Ad4EE390629cFd33991a1B90Fb648d'; // mode
 const AMOUNT_TO_FLASH_BORROW = '1000';
 const GAS_LIMIT_PER_VALIDATE = 1_000_000;
 

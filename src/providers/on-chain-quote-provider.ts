@@ -353,8 +353,7 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
     routesWithQuotes: RouteWithQuotes<TRoute>[];
     blockNumber: BigNumber;
   }> {
-    const useMixedRouteQuoter =
-      routes.some((route) => route.protocol === Protocol.V3)
+    const useMixedRouteQuoter = false
     // ||
     // routes.some((route) => route.protocol === Protocol.MIXED);
 

@@ -1,7 +1,7 @@
 import { Logger } from '@ethersproject/logger';
 import { flags } from '@oclif/command';
-import { Protocol } from '@pollum-io/router-sdk';
-import { Currency, Percent, TradeType } from '@pollum-io/sdk-core';
+import { Protocol } from 'routersdk18';
+import { Currency, Percent, TradeType } from 'sdkcore18';
 import dotenv from 'dotenv';
 import _ from 'lodash';
 
