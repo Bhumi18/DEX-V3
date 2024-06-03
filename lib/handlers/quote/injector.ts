@@ -7,7 +7,7 @@ import {
   setGlobalLogger,
   setGlobalMetric,
   V3HeuristicGasModelFactory,
-} from '@pollum-io/smart-order-router'
+} from 'smartorderrouter18'
 import { MetricsLogger } from 'aws-embedded-metrics'
 import { APIGatewayProxyEvent, Context } from 'aws-lambda'
 import { default as bunyan, default as Logger } from 'bunyan'
@@ -73,9 +73,9 @@ export class QuoteHandlerInjector extends InjectorSOR<
       tokenListProvider,
       v3SubgraphProvider,
       blockedTokenListProvider,
-      v2PoolProvider,
-      v2QuoteProvider,
-      v2SubgraphProvider,
+      // v2PoolProvider,
+      // v2QuoteProvider,
+      // v2SubgraphProvider,
       gasPriceProvider: gasPriceProviderOnChain,
       simulator,
       routeCachingProvider,
@@ -103,9 +103,9 @@ export class QuoteHandlerInjector extends InjectorSOR<
           v3GasModelFactory: new V3HeuristicGasModelFactory(),
           blockedTokenListProvider,
           tokenProvider,
-          v2PoolProvider,
-          v2QuoteProvider,
-          v2SubgraphProvider,
+          // v2PoolProvider,
+          // v2QuoteProvider,
+          // v2SubgraphProvider,
           simulator,
           routeCachingProvider,
         })
@@ -119,7 +119,7 @@ export class QuoteHandlerInjector extends InjectorSOR<
       metric,
       router,
       v3PoolProvider,
-      v2PoolProvider,
+      // v2PoolProvider,
       tokenProvider,
       tokenListProvider,
     }

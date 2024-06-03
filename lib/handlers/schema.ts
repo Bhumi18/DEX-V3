@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi'
-import { MethodParameters } from '@pollum-io/smart-order-router'
+import { MethodParameters } from 'smartorderrouter18'
 
 export type TokenInRoute = {
   address: string

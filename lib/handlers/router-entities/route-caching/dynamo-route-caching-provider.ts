@@ -6,17 +6,17 @@ import {
   IRouteCachingProvider,
   log,
   routeToString,
-} from '@pollum-io/smart-order-router'
+} from 'smartorderrouter18'
 import { DynamoDB } from 'aws-sdk'
-import { Currency, CurrencyAmount, Token, TradeType } from '@pollum-io/sdk-core'
-import { Protocol } from '@pollum-io/router-sdk'
+import { Currency, CurrencyAmount, Token, TradeType } from 'sdkcore18'
+import { Protocol } from 'routersdk18'
 import { CACHED_ROUTES_CONFIGURATION } from './cached-routes-configuration'
 import { PairTradeTypeChainId } from './model/pair-trade-type-chain-id'
 import { CachedRoutesMarshaller } from './marshalling/cached-routes-marshaller'
 import { CachedRoutesStrategy } from './model/cached-routes-strategy'
 import { ProtocolsBucketBlockNumber } from './model/protocols-bucket-block-number'
 import { CachedRoutesBucket } from './model'
-import { MixedRoute, V1Route, V3Route } from '@pollum-io/smart-order-router/build/main/routers'
+import { V3Route } from 'smartorderrouter18/build/main/routers'
 
 interface ConstructorParams {
   /**
@@ -140,7 +140,7 @@ export class DynamoRouteCachingProvider extends IRouteCachingProvider {
             return CachedRoutesMarshaller.unmarshal(cachedRoutesJson)
           })
 
-          const routesMap: Map<string, CachedRoute<V3Route | V1Route | MixedRoute>> = new Map()
+          const routesMap: Map<string, CachedRoute<V3Route>> = new Map()
           var blockNumber: number = 0
           var originalAmount: string = ''
 

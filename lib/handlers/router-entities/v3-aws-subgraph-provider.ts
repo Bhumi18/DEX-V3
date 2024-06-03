@@ -1,4 +1,4 @@
-import { ChainId, IV3SubgraphProvider, log, V3SubgraphPool, V3SubgraphProvider } from '@pollum-io/smart-order-router'
+import { ChainId, IV3SubgraphProvider, log, V3SubgraphPool, V3SubgraphProvider } from 'smartorderrouter18'
 import { S3 } from 'aws-sdk'
 import _ from 'lodash'
 import NodeCache from 'node-cache'
@@ -11,7 +11,7 @@ export class V3AWSSubgraphProviderWithFallback extends V3SubgraphProvider implem
 
   constructor(private chain: ChainId, private bucket: string, key: string) {
     super(chain)
-    this.key = `${key}${chain != ChainId.ROLLUX ? `-${chain}` : ''}`
+    this.key = `${key}${chain != ChainId.MODE ? `-${chain}` : ''}`
   }
 
   public async getPools(): Promise<V3SubgraphPool[]> {
@@ -49,18 +49,18 @@ export class V3AWSSubgraphProviderWithFallback extends V3SubgraphProvider implem
         pools = _.map(
           pools,
           (pool) =>
-            ({
-              ...pool,
-              id: pool.id.toLowerCase(),
-              token0: {
-                id: pool.token0.id.toLowerCase(),
-              },
-              token1: {
-                id: pool.token1.id.toLowerCase(),
-              },
-              tvlSYS: parseFloat(pool.totalValueLockedSYS),
-              tvlUSD: parseFloat(pool.totalValueLockedUSD),
-            } as V3SubgraphPool)
+          ({
+            ...pool,
+            id: pool.id.toLowerCase(),
+            token0: {
+              id: pool.token0.id.toLowerCase(),
+            },
+            token1: {
+              id: pool.token1.id.toLowerCase(),
+            },
+            tvlSYS: parseFloat(pool.totalValueLockedSYS),
+            tvlUSD: parseFloat(pool.totalValueLockedUSD),
+          } as V3SubgraphPool)
         )
         log.info({ sample: pools.slice(0, 5) }, 'Converted legacy schema to new schema')
       }

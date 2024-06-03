@@ -1,4 +1,4 @@
-import { Protocol } from '@pollum-io/router-sdk'
+import { Protocol } from 'routersdk18'
 
 interface ProtocolsBucketBlockNumberArgs {
   protocols: Protocol[]

@@ -25,10 +25,10 @@ interface PairFlashInterface extends ethers.utils.Interface {
     "WETH9()": FunctionFragment;
     "factory()": FunctionFragment;
     "initFlash((address,address,uint24,uint256,uint256,uint24,uint24))": FunctionFragment;
-    "pegasysV3FlashCallback(uint256,uint256,bytes)": FunctionFragment;
     "refundETH()": FunctionFragment;
     "swapRouter()": FunctionFragment;
     "sweepToken(address,uint256,address)": FunctionFragment;
+    "uniswapV3FlashCallback(uint256,uint256,bytes)": FunctionFragment;
     "unwrapWETH9(uint256,address)": FunctionFragment;
   };
 
@@ -48,10 +48,6 @@ interface PairFlashInterface extends ethers.utils.Interface {
       }
     ]
   ): string;
-  encodeFunctionData(
-    functionFragment: "pegasysV3FlashCallback",
-    values: [BigNumberish, BigNumberish, BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "refundETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "swapRouter",
@@ -62,6 +58,10 @@ interface PairFlashInterface extends ethers.utils.Interface {
     values: [string, BigNumberish, string]
   ): string;
   encodeFunctionData(
+    functionFragment: "uniswapV3FlashCallback",
+    values: [BigNumberish, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "unwrapWETH9",
     values: [BigNumberish, string]
   ): string;
@@ -69,13 +69,13 @@ interface PairFlashInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "WETH9", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initFlash", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "pegasysV3FlashCallback",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "refundETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "swapRouter", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "sweepToken", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "uniswapV3FlashCallback",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "unwrapWETH9",
     data: BytesLike
@@ -145,13 +145,6 @@ export class PairFlash extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    pegasysV3FlashCallback(
-      fee0: BigNumberish,
-      fee1: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     refundETH(
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -163,6 +156,13 @@ export class PairFlash extends BaseContract {
       amountMinimum: BigNumberish,
       recipient: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    uniswapV3FlashCallback(
+      fee0: BigNumberish,
+      fee1: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     unwrapWETH9(
@@ -189,13 +189,6 @@ export class PairFlash extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  pegasysV3FlashCallback(
-    fee0: BigNumberish,
-    fee1: BigNumberish,
-    data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   refundETH(
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -207,6 +200,13 @@ export class PairFlash extends BaseContract {
     amountMinimum: BigNumberish,
     recipient: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  uniswapV3FlashCallback(
+    fee0: BigNumberish,
+    fee1: BigNumberish,
+    data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   unwrapWETH9(
@@ -233,13 +233,6 @@ export class PairFlash extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    pegasysV3FlashCallback(
-      fee0: BigNumberish,
-      fee1: BigNumberish,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     refundETH(overrides?: CallOverrides): Promise<void>;
 
     swapRouter(overrides?: CallOverrides): Promise<string>;
@@ -248,6 +241,13 @@ export class PairFlash extends BaseContract {
       token: string,
       amountMinimum: BigNumberish,
       recipient: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    uniswapV3FlashCallback(
+      fee0: BigNumberish,
+      fee1: BigNumberish,
+      data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -278,13 +278,6 @@ export class PairFlash extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    pegasysV3FlashCallback(
-      fee0: BigNumberish,
-      fee1: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     refundETH(
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -296,6 +289,13 @@ export class PairFlash extends BaseContract {
       amountMinimum: BigNumberish,
       recipient: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    uniswapV3FlashCallback(
+      fee0: BigNumberish,
+      fee1: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     unwrapWETH9(
@@ -323,13 +323,6 @@ export class PairFlash extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    pegasysV3FlashCallback(
-      fee0: BigNumberish,
-      fee1: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     refundETH(
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -341,6 +334,13 @@ export class PairFlash extends BaseContract {
       amountMinimum: BigNumberish,
       recipient: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    uniswapV3FlashCallback(
+      fee0: BigNumberish,
+      fee1: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     unwrapWETH9(

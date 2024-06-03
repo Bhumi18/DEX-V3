@@ -1,7 +1,7 @@
-import { Pool } from '@pollum-io/v3-sdk'
-import { FeeAmount } from '@pollum-io/v3-sdk/dist/constants'
+import { Pool } from 'v3sdk18'
+import { FeeAmount } from 'v3sdk18/dist/constants'
 import { MarshalledToken, TokenMarshaller } from './token-marshaller'
-import { Protocol } from '@pollum-io/router-sdk'
+import { Protocol } from 'routersdk18'
 
 export interface MarshalledPool {
   protocol: Protocol

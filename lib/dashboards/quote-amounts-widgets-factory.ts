@@ -1,5 +1,5 @@
-import { TradeType } from '@pollum-io/sdk-core'
-import { ChainId, ID_TO_NETWORK_NAME } from '@pollum-io/smart-order-router'
+import { TradeType } from 'sdkcore18'
+import { ChainId, ID_TO_NETWORK_NAME } from 'smartorderrouter18'
 import _ from 'lodash'
 import { PAIRS_TO_TRACK } from '../handlers/quote/util/pairs-to-track'
 import { Widget } from './core/model/widget'

@@ -1,4 +1,4 @@
-import { Currency, Percent } from '@pollum-io/sdk-core'
+import { Currency, Percent } from 'sdkcore18'
 import {
   AlphaRouterConfig,
   ChainId,
@@ -7,7 +7,7 @@ import {
   // MapWithLowerCaseKey,
   NATIVE_NAMES_BY_ID,
   nativeOnChain,
-} from '@pollum-io/smart-order-router'
+} from 'smartorderrouter18'
 import Logger from 'bunyan'
 
 export const DEFAULT_ROUTING_CONFIG_BY_CHAIN = (chainId: ChainId): AlphaRouterConfig => {

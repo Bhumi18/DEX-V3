@@ -1,5 +1,5 @@
-import { Protocol } from '@pollum-io/router-sdk'
-import { ChainId, setGlobalLogger } from '@pollum-io/smart-order-router'
+import { Protocol } from 'routersdk18'
+import { ChainId, setGlobalLogger } from 'smartorderrouter18'
 import { EventBridgeEvent, ScheduledHandler } from 'aws-lambda'
 import { S3 } from 'aws-sdk'
 import { default as bunyan, default as Logger } from 'bunyan'

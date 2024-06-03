@@ -239,7 +239,7 @@ const _abi = [
         type: "bytes",
       },
     ],
-    name: "pegasysV3SwapCallback",
+    name: "uniswapV3SwapCallback",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

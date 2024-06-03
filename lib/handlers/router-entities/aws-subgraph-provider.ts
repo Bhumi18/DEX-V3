@@ -1,12 +1,12 @@
-import { Protocol } from '@pollum-io/router-sdk'
+import { Protocol } from 'routersdk18'
 import {
   ChainId,
-  IV2SubgraphProvider,
+  // IV2SubgraphProvider,
   IV3SubgraphProvider,
   log,
-  V2SubgraphPool,
+  // V2SubgraphPool,
   V3SubgraphPool,
-} from '@pollum-io/smart-order-router'
+} from 'smartorderrouter18'
 import { S3 } from 'aws-sdk'
 import NodeCache from 'node-cache'
 import { S3_POOL_CACHE_KEY } from '../../util/pool-cache-key'
@@ -14,7 +14,7 @@ import { S3_POOL_CACHE_KEY } from '../../util/pool-cache-key'
 const POOL_CACHE = new NodeCache({ stdTTL: 240, useClones: false })
 const LOCAL_POOL_CACHE_KEY = (chainId: ChainId, protocol: Protocol) => `pools${chainId}#${protocol}`
 
-export class AWSSubgraphProvider<TSubgraphPool extends V2SubgraphPool | V3SubgraphPool> {
+export class AWSSubgraphProvider<TSubgraphPool extends V3SubgraphPool> {
   constructor(private chain: ChainId, private protocol: Protocol, private bucket: string, private baseKey: string) { }
 
   public async getPools(): Promise<TSubgraphPool[]> {
@@ -89,15 +89,15 @@ export class V3AWSSubgraphProvider extends AWSSubgraphProvider<V3SubgraphPool> i
   }
 }
 
-export class V2AWSSubgraphProvider extends AWSSubgraphProvider<V2SubgraphPool> implements IV2SubgraphProvider {
-  constructor(chainId: ChainId, bucket: string, key: string) {
-    super(chainId, Protocol.V1, bucket, key)
-  }
+// export class V2AWSSubgraphProvider extends AWSSubgraphProvider<V2SubgraphPool> implements IV2SubgraphProvider {
+//   constructor(chainId: ChainId, bucket: string, key: string) {
+//     super(chainId, Protocol.V1, bucket, key)
+//   }
 
-  public static async EagerBuild(bucket: string, baseKey: string, chainId: ChainId): Promise<V2AWSSubgraphProvider> {
-    const s3 = new S3()
-    await cachePoolsFromS3<V2SubgraphPool>(s3, bucket, baseKey, chainId, Protocol.V1)
+//   public static async EagerBuild(bucket: string, baseKey: string, chainId: ChainId): Promise<V2AWSSubgraphProvider> {
+//     const s3 = new S3()
+//     await cachePoolsFromS3<V2SubgraphPool>(s3, bucket, baseKey, chainId, Protocol.V1)
 
-    return new V2AWSSubgraphProvider(chainId, bucket, baseKey)
-  }
-}
+//     return new V2AWSSubgraphProvider(chainId, bucket, baseKey)
+//   }
+// }

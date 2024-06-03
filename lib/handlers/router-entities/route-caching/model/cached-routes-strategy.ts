@@ -1,6 +1,6 @@
-import { Currency, CurrencyAmount, TradeType } from '@pollum-io/sdk-core'
+import { Currency, CurrencyAmount, TradeType } from 'sdkcore18'
 import { CachedRoutesBucket } from './cached-routes-bucket'
-import { CacheMode, ChainId } from '@pollum-io/smart-order-router'
+import { CacheMode, ChainId } from 'smartorderrouter18'
 
 interface CachedRoutesStrategyArgs {
   pair: string

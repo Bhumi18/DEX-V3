@@ -1,4 +1,4 @@
-import { CurrencyAmount, Token } from '@pollum-io/sdk-core'
+import { CurrencyAmount, Token } from 'sdkcore18'
 import { MarshalledToken, TokenMarshaller } from './token-marshaller'
 
 export interface MarshalledCurrencyAmount {

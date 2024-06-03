@@ -1,4 +1,4 @@
-import { Protocol } from '@pollum-io/router-sdk'
+import { Protocol } from 'routersdk18'
 import * as cdk from 'aws-cdk-lib'
 import { Duration } from 'aws-cdk-lib'
 import * as aws_cloudwatch from 'aws-cdk-lib/aws-cloudwatch'

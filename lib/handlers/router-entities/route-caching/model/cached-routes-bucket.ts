@@ -1,4 +1,4 @@
-import { CacheMode } from '@pollum-io/smart-order-router'
+import { CacheMode } from 'smartorderrouter18'
 
 interface CachedRoutesBucketsArgs {
   /**

@@ -1,4 +1,4 @@
-import { Token } from '@pollum-io/sdk-core'
+import { Token } from 'sdkcore18'
 import {
   CachingGasStationProvider,
   CachingTokenListProvider,
@@ -14,8 +14,8 @@ import {
   Simulator,
   ITokenListProvider,
   ITokenProvider,
-  IV2PoolProvider,
-  IV2SubgraphProvider,
+  // IV2PoolProvider,
+  // IV2SubgraphProvider,
   IV3PoolProvider,
   IV3SubgraphProvider,
   LegacyGasPriceProvider,
@@ -23,34 +23,34 @@ import {
   OnChainGasPriceProvider,
   OnChainQuoteProvider,
   setGlobalLogger,
-  StaticV2SubgraphProvider,
+  // StaticV2SubgraphProvider,
   StaticV3SubgraphProvider,
   TokenProvider,
   UniswapMulticallProvider,
-  V2PoolProvider,
-  V2QuoteProvider,
+  // V2PoolProvider,
+  // V2QuoteProvider,
   V3PoolProvider,
   IRouteCachingProvider,
-} from '@pollum-io/smart-order-router'
-import { TokenList } from '@uniswap/token-lists'
+} from 'smartorderrouter18'
+import { TokenList } from 'udonswap-token-lists'
 import { default as bunyan, default as Logger } from 'bunyan'
 import { ethers } from 'ethers'
 import _ from 'lodash'
 import NodeCache from 'node-cache'
 import UNSUPPORTED_TOKEN_LIST from './../config/unsupported.tokenlist.json'
 import { BaseRInj, Injector } from './handler'
-import { V2AWSSubgraphProvider, V3AWSSubgraphProvider } from './router-entities/aws-subgraph-provider'
+import { V3AWSSubgraphProvider } from './router-entities/aws-subgraph-provider'
 import { AWSTokenListProvider } from './router-entities/aws-token-list-provider'
 import { DynamoRouteCachingProvider } from './router-entities/route-caching/dynamo-route-caching-provider'
 
-export const SUPPORTED_CHAINS: ChainId[] = [ChainId.ROLLUX_TANENBAUM, ChainId.ROLLUX]
+export const SUPPORTED_CHAINS: ChainId[] = [ChainId.MODE]
 const DEFAULT_TOKEN_LIST = 'https://raw.githubusercontent.com/pegasys-fi/default-token-list/main/build/pegasys-default.tokenlist.json'
 
 export interface RequestInjected<Router> extends BaseRInj {
   chainId: ChainId
   metric: IMetric
   v3PoolProvider: IV3PoolProvider
-  v2PoolProvider: IV2PoolProvider
+  // v2PoolProvider: IV2PoolProvider
   tokenProvider: ITokenProvider
   tokenListProvider: ITokenListProvider
   router: Router
@@ -59,17 +59,17 @@ export interface RequestInjected<Router> extends BaseRInj {
 export type ContainerDependencies = {
   provider: ethers.providers.JsonRpcProvider
   v3SubgraphProvider: IV3SubgraphProvider
-  v2SubgraphProvider: IV2SubgraphProvider
+  // v2SubgraphProvider: IV2SubgraphProvider
   tokenListProvider: ITokenListProvider
   gasPriceProvider: IGasPriceProvider
   tokenProviderFromTokenList: ITokenProvider
   blockedTokenListProvider: ITokenListProvider
   v3PoolProvider: IV3PoolProvider
-  v2PoolProvider: IV2PoolProvider
+  // v2PoolProvider: IV2PoolProvider
   tokenProvider: ITokenProvider
   multicallProvider: UniswapMulticallProvider
   onChainQuoteProvider?: OnChainQuoteProvider
-  v2QuoteProvider: V2QuoteProvider
+  // v2QuoteProvider: V2QuoteProvider
   simulator: Simulator
   routeCachingProvider?: IRouteCachingProvider
 }
@@ -153,8 +153,8 @@ export abstract class InjectorSOR<Router, QueryParams> extends Injector<
         // 200*725k < 150m
         let quoteProvider: OnChainQuoteProvider | undefined = undefined
         switch (chainId) {
-          case ChainId.ROLLUX_TANENBAUM:
-          case ChainId.ROLLUX:
+          // case ChainId.ROLLUX_TANENBAUM:
+          case ChainId.MODE:
             quoteProvider = new OnChainQuoteProvider(
               chainId,
               provider,
@@ -229,7 +229,7 @@ export abstract class InjectorSOR<Router, QueryParams> extends Injector<
           new NodeJSCache(new NodeCache({ stdTTL: 180, useClones: false }))
         )
 
-        const v2PoolProvider = new V2PoolProvider(chainId, multicall2Provider)
+        // const v2PoolProvider = new V2PoolProvider(chainId, multicall2Provider)
 
         const tenderlySimulator = new TenderlySimulator(
           chainId,
@@ -237,17 +237,17 @@ export abstract class InjectorSOR<Router, QueryParams> extends Injector<
           process.env.TENDERLY_USER!,
           process.env.TENDERLY_PROJECT!,
           process.env.TENDERLY_ACCESS_KEY!,
-          v2PoolProvider,
+          // v2PoolProvider,
           v3PoolProvider,
           provider,
-          { [ChainId.ROLLUX]: 2.5 }
+          { [ChainId.MODE]: 2.5 }
         )
 
-        const ethEstimateGasSimulator = new EthEstimateGasSimulator(chainId, provider, v2PoolProvider, v3PoolProvider)
+        const ethEstimateGasSimulator = new EthEstimateGasSimulator(chainId, provider, v3PoolProvider)
 
         const simulator = new FallbackTenderlySimulator(chainId, provider, tenderlySimulator, ethEstimateGasSimulator)
 
-        const [v3SubgraphProvider, v2SubgraphProvider] = await Promise.all([
+        const [v3SubgraphProvider] = await Promise.all([
           (async () => {
             try {
               const subgraphProvider = await V3AWSSubgraphProvider.EagerBuild(
@@ -261,18 +261,18 @@ export abstract class InjectorSOR<Router, QueryParams> extends Injector<
               return new StaticV3SubgraphProvider(chainId, v3PoolProvider)
             }
           })(),
-          (async () => {
-            try {
-              const subgraphProvider = await V2AWSSubgraphProvider.EagerBuild(
-                POOL_CACHE_BUCKET_2!,
-                POOL_CACHE_KEY!,
-                chainId
-              )
-              return subgraphProvider
-            } catch (err) {
-              return new StaticV2SubgraphProvider(chainId)
-            }
-          })(),
+          // (async () => {
+          //   try {
+          //     const subgraphProvider = await V2AWSSubgraphProvider.EagerBuild(
+          //       POOL_CACHE_BUCKET_2!,
+          //       POOL_CACHE_KEY!,
+          //       chainId
+          //     )
+          //     return subgraphProvider
+          //   } catch (err) {
+          //     return new StaticV2SubgraphProvider(chainId)
+          //   }
+          // })(),
         ])
 
         let routeCachingProvider: IRouteCachingProvider | undefined = undefined
@@ -309,9 +309,9 @@ export abstract class InjectorSOR<Router, QueryParams> extends Injector<
             v3SubgraphProvider,
             onChainQuoteProvider: quoteProvider,
             v3PoolProvider,
-            v2PoolProvider,
-            v2QuoteProvider: new V2QuoteProvider(),
-            v2SubgraphProvider,
+            // v2PoolProvider,
+            // v2QuoteProvider: new V2QuoteProvider(),
+            // v2SubgraphProvider,
             simulator,
             routeCachingProvider,
           },

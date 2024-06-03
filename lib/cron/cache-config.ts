@@ -1,17 +1,17 @@
-import { Protocol } from '@pollum-io/router-sdk'
+import { Protocol } from 'routersdk18'
 import {
   ChainId,
-  V2SubgraphProvider,
+  // V2SubgraphProvider,
   V3SubgraphProvider,
-} from '@pollum-io/smart-order-router'
+} from 'smartorderrouter18'
 
 export const chainProtocols = [
   // V3.
   {
     protocol: Protocol.V3,
-    chainId: ChainId.ROLLUX,
+    chainId: ChainId.MODE,
     timeout: 90000,
-    provider: new V3SubgraphProvider(ChainId.ROLLUX, 3, 90000),
+    provider: new V3SubgraphProvider(ChainId.MODE, 3, 90000),
   },
   // {
   //   protocol: Protocol.V2,
@@ -39,10 +39,10 @@ export const chainProtocols = [
   // },
   // // Currently there is no working V3 subgraph for Optimism so we use a static provider.
   // // V2.
-  {
-    protocol: Protocol.V1,
-    chainId: ChainId.ROLLUX,
-    timeout: 840000,
-    provider: new V2SubgraphProvider(ChainId.ROLLUX, 3, 900000, true, 250),
-  },
+  // {
+  //   protocol: Protocol.V1,
+  //   chainId: ChainId.ROLLUX,
+  //   timeout: 840000,
+  //   provider: new V2SubgraphProvider(ChainId.ROLLUX, 3, 900000, true, 250),
+  // },
 ]

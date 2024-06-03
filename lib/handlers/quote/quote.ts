@@ -1,8 +1,8 @@
 import Joi from '@hapi/joi'
-import { Protocol } from '@pollum-io/router-sdk'
-import { UNIVERSAL_ROUTER_ADDRESS } from '@pollum-io/universal-router-sdk'
+import { Protocol } from 'routersdk18'
+import { UNIVERSAL_ROUTER_ADDRESS } from 'universalroutersdk18'
 import { PermitSingle } from '@uniswap/permit2-sdk'
-import { Currency, CurrencyAmount, TradeType } from '@pollum-io/sdk-core'
+import { Currency, CurrencyAmount, TradeType } from 'sdkcore18'
 import {
   AlphaRouterConfig,
   IRouter,
@@ -14,8 +14,8 @@ import {
   SimulationStatus,
   IMetric,
   ChainId,
-} from '@pollum-io/smart-order-router'
-import { Pool } from '@pollum-io/v3-sdk'
+} from 'smartorderrouter18'
+import { Pool } from 'v3sdk18'
 import JSBI from 'jsbi'
 import _ from 'lodash'
 import { APIGLambdaHandler, ErrorResponse, HandleRequestParams, Response } from '../handler'
@@ -74,7 +74,7 @@ export class QuoteHandler extends APIGLambdaHandler<
         tokenProvider,
         tokenListProvider,
         v3PoolProvider: v3PoolProvider,
-        v2PoolProvider: v2PoolProvider,
+        // v2PoolProvider: v2PoolProvider,
         metric,
       },
     } = params
@@ -141,15 +141,15 @@ export class QuoteHandler extends APIGLambdaHandler<
     if (protocolsStr) {
       for (const protocolStr of protocolsStr) {
         switch (protocolStr.toLowerCase()) {
-          case 'v1':
-            protocols.push(Protocol.V1)
-            break
+          // case 'v1':
+          //   protocols.push(Protocol.V1)
+          //   break
           case 'v3':
             protocols.push(Protocol.V3)
             break
-          case 'mixed':
-            protocols.push(Protocol.MIXED)
-            break
+          // case 'mixed':
+          //   protocols.push(Protocol.MIXED)
+          //   break
           default:
             return {
               statusCode: 400,
@@ -358,7 +358,7 @@ export class QuoteHandler extends APIGLambdaHandler<
     for (const subRoute of route) {
       const { amount, quote, tokenPath } = subRoute
 
-      const pools = subRoute.protocol == Protocol.V1 ? subRoute.route.pairs : subRoute.route.pools
+      const pools = subRoute.route.pools
       const curRoute: (V3PoolInRoute | V2PoolInRoute)[] = []
       for (let i = 0; i < pools.length; i++) {
         const nextPool = pools[i]
@@ -398,47 +398,48 @@ export class QuoteHandler extends APIGLambdaHandler<
             amountIn: edgeAmountIn,
             amountOut: edgeAmountOut,
           })
-        } else {
-          const reserve0 = nextPool.reserve0
-          const reserve1 = nextPool.reserve1
-
-          curRoute.push({
-            type: 'v2-pool',
-            address: v2PoolProvider.getPoolAddress(nextPool.token0, nextPool.token1).poolAddress,
-            tokenIn: {
-              chainId: tokenIn.chainId,
-              decimals: tokenIn.decimals.toString(),
-              address: tokenIn.address,
-              symbol: tokenIn.symbol!,
-            },
-            tokenOut: {
-              chainId: tokenOut.chainId,
-              decimals: tokenOut.decimals.toString(),
-              address: tokenOut.address,
-              symbol: tokenOut.symbol!,
-            },
-            reserve0: {
-              token: {
-                chainId: reserve0.currency.wrapped.chainId,
-                decimals: reserve0.currency.wrapped.decimals.toString(),
-                address: reserve0.currency.wrapped.address,
-                symbol: reserve0.currency.wrapped.symbol!,
-              },
-              quotient: reserve0.quotient.toString(),
-            },
-            reserve1: {
-              token: {
-                chainId: reserve1.currency.wrapped.chainId,
-                decimals: reserve1.currency.wrapped.decimals.toString(),
-                address: reserve1.currency.wrapped.address,
-                symbol: reserve1.currency.wrapped.symbol!,
-              },
-              quotient: reserve1.quotient.toString(),
-            },
-            amountIn: edgeAmountIn,
-            amountOut: edgeAmountOut,
-          })
         }
+        // else {
+        //   const reserve0 = nextPool.reserve0
+        //   const reserve1 = nextPool.reserve1
+
+        //   curRoute.push({
+        //     type: 'v2-pool',
+        //     address: v2PoolProvider.getPoolAddress(nextPool.token0, nextPool.token1).poolAddress,
+        //     tokenIn: {
+        //       chainId: tokenIn.chainId,
+        //       decimals: tokenIn.decimals.toString(),
+        //       address: tokenIn.address,
+        //       symbol: tokenIn.symbol!,
+        //     },
+        //     tokenOut: {
+        //       chainId: tokenOut.chainId,
+        //       decimals: tokenOut.decimals.toString(),
+        //       address: tokenOut.address,
+        //       symbol: tokenOut.symbol!,
+        //     },
+        //     reserve0: {
+        //       token: {
+        //         chainId: reserve0.currency.wrapped.chainId,
+        //         decimals: reserve0.currency.wrapped.decimals.toString(),
+        //         address: reserve0.currency.wrapped.address,
+        //         symbol: reserve0.currency.wrapped.symbol!,
+        //       },
+        //       quotient: reserve0.quotient.toString(),
+        //     },
+        //     reserve1: {
+        //       token: {
+        //         chainId: reserve1.currency.wrapped.chainId,
+        //         decimals: reserve1.currency.wrapped.decimals.toString(),
+        //         address: reserve1.currency.wrapped.address,
+        //         symbol: reserve1.currency.wrapped.symbol!,
+        //       },
+        //       quotient: reserve1.quotient.toString(),
+        //     },
+        //     amountIn: edgeAmountIn,
+        //     amountOut: edgeAmountOut,
+        //   })
+        // }
       }
 
       routeResponse.push(curRoute)

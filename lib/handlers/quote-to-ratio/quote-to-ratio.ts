@@ -1,6 +1,6 @@
 import Joi from '@hapi/joi'
-import { CondensedAddLiquidityOptions, Protocol } from '@pollum-io/router-sdk'
-import { Currency, CurrencyAmount, Fraction } from '@pollum-io/sdk-core'
+import { CondensedAddLiquidityOptions, Protocol } from 'routersdk18'
+import { Currency, CurrencyAmount, Fraction } from 'sdkcore18'
 import {
   AlphaRouterConfig,
   ISwapToRatio,
@@ -10,8 +10,8 @@ import {
   SwapAndAddOptions,
   SwapToRatioStatus,
   SwapType,
-} from '@pollum-io/smart-order-router'
-import { Position } from '@pollum-io/v3-sdk'
+} from 'smartorderrouter18'
+import { Position } from 'v3sdk18'
 import JSBI from 'jsbi'
 import { APIGLambdaHandler, ErrorResponse, HandleRequestParams, Response } from '../handler'
 import { ContainerInjected, RequestInjected } from '../injector-sor'
@@ -72,7 +72,7 @@ export class QuoteToRatioHandler extends APIGLambdaHandler<
         tokenProvider,
         tokenListProvider,
         v3PoolProvider,
-        v2PoolProvider,
+        // v2PoolProvider,
         metric,
       },
     } = params
@@ -329,67 +329,68 @@ export class QuoteToRatioHandler extends APIGLambdaHandler<
         }
 
         routeResponse.push(curRoute)
-      } else if (subRoute.protocol == Protocol.V1) {
-        const pools = subRoute.route.pairs
-        const curRoute: V2PoolInRoute[] = []
-        for (let i = 0; i < pools.length; i++) {
-          const nextPool = pools[i]
-          const tokenIn = tokenPath[i]
-          const tokenOut = tokenPath[i + 1]
-
-          let edgeAmountIn = undefined
-          if (i == 0) {
-            edgeAmountIn = type == 'exactIn' ? amount.quotient.toString() : quote.quotient.toString()
-          }
-
-          let edgeAmountOut = undefined
-          if (i == pools.length - 1) {
-            edgeAmountOut = type == 'exactIn' ? quote.quotient.toString() : amount.quotient.toString()
-          }
-
-          const reserve0 = nextPool.reserve0
-          const reserve1 = nextPool.reserve1
-
-          curRoute.push({
-            type: 'v2-pool',
-            address: v2PoolProvider.getPoolAddress(nextPool.token0, nextPool.token1).poolAddress,
-            tokenIn: {
-              chainId: tokenIn.chainId,
-              decimals: tokenIn.decimals.toString(),
-              address: tokenIn.address,
-              symbol: tokenIn.symbol!,
-            },
-            tokenOut: {
-              chainId: tokenOut.chainId,
-              decimals: tokenOut.decimals.toString(),
-              address: tokenOut.address,
-              symbol: tokenOut.symbol!,
-            },
-            reserve0: {
-              token: {
-                chainId: reserve0.currency.wrapped.chainId,
-                decimals: reserve0.currency.wrapped.decimals.toString(),
-                address: reserve0.currency.wrapped.address,
-                symbol: reserve0.currency.wrapped.symbol!,
-              },
-              quotient: reserve0.quotient.toString(),
-            },
-            reserve1: {
-              token: {
-                chainId: reserve1.currency.wrapped.chainId,
-                decimals: reserve1.currency.wrapped.decimals.toString(),
-                address: reserve1.currency.wrapped.address,
-                symbol: reserve1.currency.wrapped.symbol!,
-              },
-              quotient: reserve1.quotient.toString(),
-            },
-            amountIn: edgeAmountIn,
-            amountOut: edgeAmountOut,
-          })
-        }
-
-        routeResponse.push(curRoute)
       }
+      // else if (subRoute.protocol == Protocol.V1) {
+      //   const pools = subRoute.route.pairs
+      //   const curRoute: V2PoolInRoute[] = []
+      //   for (let i = 0; i < pools.length; i++) {
+      //     const nextPool = pools[i]
+      //     const tokenIn = tokenPath[i]
+      //     const tokenOut = tokenPath[i + 1]
+
+      //     let edgeAmountIn = undefined
+      //     if (i == 0) {
+      //       edgeAmountIn = type == 'exactIn' ? amount.quotient.toString() : quote.quotient.toString()
+      //     }
+
+      //     let edgeAmountOut = undefined
+      //     if (i == pools.length - 1) {
+      //       edgeAmountOut = type == 'exactIn' ? quote.quotient.toString() : amount.quotient.toString()
+      //     }
+
+      //     const reserve0 = nextPool.reserve0
+      //     const reserve1 = nextPool.reserve1
+
+      //     curRoute.push({
+      //       type: 'v2-pool',
+      //       address: v2PoolProvider.getPoolAddress(nextPool.token0, nextPool.token1).poolAddress,
+      //       tokenIn: {
+      //         chainId: tokenIn.chainId,
+      //         decimals: tokenIn.decimals.toString(),
+      //         address: tokenIn.address,
+      //         symbol: tokenIn.symbol!,
+      //       },
+      //       tokenOut: {
+      //         chainId: tokenOut.chainId,
+      //         decimals: tokenOut.decimals.toString(),
+      //         address: tokenOut.address,
+      //         symbol: tokenOut.symbol!,
+      //       },
+      //       reserve0: {
+      //         token: {
+      //           chainId: reserve0.currency.wrapped.chainId,
+      //           decimals: reserve0.currency.wrapped.decimals.toString(),
+      //           address: reserve0.currency.wrapped.address,
+      //           symbol: reserve0.currency.wrapped.symbol!,
+      //         },
+      //         quotient: reserve0.quotient.toString(),
+      //       },
+      //       reserve1: {
+      //         token: {
+      //           chainId: reserve1.currency.wrapped.chainId,
+      //           decimals: reserve1.currency.wrapped.decimals.toString(),
+      //           address: reserve1.currency.wrapped.address,
+      //           symbol: reserve1.currency.wrapped.symbol!,
+      //         },
+      //         quotient: reserve1.quotient.toString(),
+      //       },
+      //       amountIn: edgeAmountIn,
+      //       amountOut: edgeAmountOut,
+      //     })
+      //   }
+
+      //   routeResponse.push(curRoute)
+      // }
     }
 
     const tokenIn = trade.inputAmount.currency.wrapped

@@ -40,7 +40,6 @@ interface NonfungiblePositionManagerInterface extends ethers.utils.Interface {
     "multicall(bytes[])": FunctionFragment;
     "name()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
-    "pegasysV3MintCallback(uint256,uint256,bytes)": FunctionFragment;
     "permit(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "positions(uint256)": FunctionFragment;
     "refundETH()": FunctionFragment;
@@ -58,6 +57,7 @@ interface NonfungiblePositionManagerInterface extends ethers.utils.Interface {
     "tokenURI(uint256)": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "uniswapV3MintCallback(uint256,uint256,bytes)": FunctionFragment;
     "unwrapWETH9(uint256,address)": FunctionFragment;
   };
 
@@ -152,10 +152,6 @@ interface NonfungiblePositionManagerInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "ownerOf",
     values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "pegasysV3MintCallback",
-    values: [BigNumberish, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "permit",
@@ -255,6 +251,10 @@ interface NonfungiblePositionManagerInterface extends ethers.utils.Interface {
     values: [string, string, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "uniswapV3MintCallback",
+    values: [BigNumberish, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "unwrapWETH9",
     values: [BigNumberish, string]
   ): string;
@@ -298,10 +298,6 @@ interface NonfungiblePositionManagerInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "multicall", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "pegasysV3MintCallback",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "positions", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "refundETH", data: BytesLike): Result;
@@ -347,6 +343,10 @@ interface NonfungiblePositionManagerInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "transferFrom",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "uniswapV3MintCallback",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -566,13 +566,6 @@ export class NonfungiblePositionManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    pegasysV3MintCallback(
-      amount0Owed: BigNumberish,
-      amount1Owed: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     permit(
       spender: string,
       tokenId: BigNumberish,
@@ -720,6 +713,13 @@ export class NonfungiblePositionManager extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    uniswapV3MintCallback(
+      amount0Owed: BigNumberish,
+      amount1Owed: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     unwrapWETH9(
       amountMinimum: BigNumberish,
       recipient: string,
@@ -827,13 +827,6 @@ export class NonfungiblePositionManager extends BaseContract {
   name(overrides?: CallOverrides): Promise<string>;
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  pegasysV3MintCallback(
-    amount0Owed: BigNumberish,
-    amount1Owed: BigNumberish,
-    data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   permit(
     spender: string,
@@ -979,6 +972,13 @@ export class NonfungiblePositionManager extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  uniswapV3MintCallback(
+    amount0Owed: BigNumberish,
+    amount1Owed: BigNumberish,
+    data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   unwrapWETH9(
     amountMinimum: BigNumberish,
     recipient: string,
@@ -1097,13 +1097,6 @@ export class NonfungiblePositionManager extends BaseContract {
     name(overrides?: CallOverrides): Promise<string>;
 
     ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    pegasysV3MintCallback(
-      amount0Owed: BigNumberish,
-      amount1Owed: BigNumberish,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     permit(
       spender: string,
@@ -1244,6 +1237,13 @@ export class NonfungiblePositionManager extends BaseContract {
       from: string,
       to: string,
       tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    uniswapV3MintCallback(
+      amount0Owed: BigNumberish,
+      amount1Owed: BigNumberish,
+      data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1505,13 +1505,6 @@ export class NonfungiblePositionManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    pegasysV3MintCallback(
-      amount0Owed: BigNumberish,
-      amount1Owed: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     permit(
       spender: string,
       tokenId: BigNumberish,
@@ -1631,6 +1624,13 @@ export class NonfungiblePositionManager extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    uniswapV3MintCallback(
+      amount0Owed: BigNumberish,
+      amount1Owed: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     unwrapWETH9(
       amountMinimum: BigNumberish,
       recipient: string,
@@ -1744,13 +1744,6 @@ export class NonfungiblePositionManager extends BaseContract {
     ownerOf(
       tokenId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    pegasysV3MintCallback(
-      amount0Owed: BigNumberish,
-      amount1Owed: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     permit(
@@ -1869,6 +1862,13 @@ export class NonfungiblePositionManager extends BaseContract {
       from: string,
       to: string,
       tokenId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    uniswapV3MintCallback(
+      amount0Owed: BigNumberish,
+      amount1Owed: BigNumberish,
+      data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

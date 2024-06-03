@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { Widget } from './core/model/widget'
 import { WidgetsFactory } from './core/widgets-factory'
 import { CACHED_ROUTES_CONFIGURATION, CachedRoutesStrategy } from '../handlers/router-entities/route-caching'
-import { TradeType } from '@pollum-io/sdk-core'
+import { TradeType } from 'sdkcore18'
 
 export class CachedRoutesWidgetsFactory implements WidgetsFactory {
   region: string
@@ -125,9 +125,8 @@ export class CachedRoutesWidgetsFactory implements WidgetsFactory {
 
   private generateWidgetsForStrategies(cacheStrategy: CachedRoutesStrategy): Widget[] {
     const pairTradeTypeChainId = cacheStrategy.readablePairTradeTypeChainId()
-    const getQuoteMetricName = `GET_QUOTE_AMOUNT_${cacheStrategy.pair}_${cacheStrategy.tradeType.toUpperCase()}_CHAIN_${
-      cacheStrategy.chainId
-    }`
+    const getQuoteMetricName = `GET_QUOTE_AMOUNT_${cacheStrategy.pair}_${cacheStrategy.tradeType.toUpperCase()}_CHAIN_${cacheStrategy.chainId
+      }`
     const tokenIn = cacheStrategy.pair.split('/')[0]
     const tokenOut = cacheStrategy.pair.split('/')[1]
 

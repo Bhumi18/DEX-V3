@@ -23,20 +23,16 @@ interface QuoterInterface extends ethers.utils.Interface {
   functions: {
     "WETH9()": FunctionFragment;
     "factory()": FunctionFragment;
-    "pegasysV3SwapCallback(int256,int256,bytes)": FunctionFragment;
     "quoteExactInput(bytes,uint256)": FunctionFragment;
     "quoteExactInputSingle(address,address,uint24,uint256,uint160)": FunctionFragment;
     "quoteExactOutput(bytes,uint256)": FunctionFragment;
     "quoteExactOutputSingle(address,address,uint24,uint256,uint160)": FunctionFragment;
+    "uniswapV3SwapCallback(int256,int256,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "WETH9", values?: undefined): string;
   encodeFunctionData(functionFragment: "factory", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "pegasysV3SwapCallback",
-    values: [BigNumberish, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "quoteExactInput",
     values: [BytesLike, BigNumberish]
   ): string;
@@ -51,15 +47,15 @@ interface QuoterInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "quoteExactOutputSingle",
     values: [string, string, BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "uniswapV3SwapCallback",
+    values: [BigNumberish, BigNumberish, BytesLike]
   ): string;
 
   decodeFunctionResult(functionFragment: "WETH9", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "pegasysV3SwapCallback",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "quoteExactInput",
     data: BytesLike
   ): Result;
@@ -73,6 +69,10 @@ interface QuoterInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "quoteExactOutputSingle",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "uniswapV3SwapCallback",
     data: BytesLike
   ): Result;
 
@@ -127,13 +127,6 @@ export class Quoter extends BaseContract {
 
     factory(overrides?: CallOverrides): Promise<[string]>;
 
-    pegasysV3SwapCallback(
-      amount0Delta: BigNumberish,
-      amount1Delta: BigNumberish,
-      path: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
     quoteExactInput(
       path: BytesLike,
       amountIn: BigNumberish,
@@ -163,18 +156,18 @@ export class Quoter extends BaseContract {
       sqrtPriceLimitX96: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    uniswapV3SwapCallback(
+      amount0Delta: BigNumberish,
+      amount1Delta: BigNumberish,
+      path: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
   };
 
   WETH9(overrides?: CallOverrides): Promise<string>;
 
   factory(overrides?: CallOverrides): Promise<string>;
-
-  pegasysV3SwapCallback(
-    amount0Delta: BigNumberish,
-    amount1Delta: BigNumberish,
-    path: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
 
   quoteExactInput(
     path: BytesLike,
@@ -206,17 +199,17 @@ export class Quoter extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  uniswapV3SwapCallback(
+    amount0Delta: BigNumberish,
+    amount1Delta: BigNumberish,
+    path: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
   callStatic: {
     WETH9(overrides?: CallOverrides): Promise<string>;
 
     factory(overrides?: CallOverrides): Promise<string>;
-
-    pegasysV3SwapCallback(
-      amount0Delta: BigNumberish,
-      amount1Delta: BigNumberish,
-      path: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     quoteExactInput(
       path: BytesLike,
@@ -247,6 +240,13 @@ export class Quoter extends BaseContract {
       sqrtPriceLimitX96: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    uniswapV3SwapCallback(
+      amount0Delta: BigNumberish,
+      amount1Delta: BigNumberish,
+      path: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {};
@@ -256,13 +256,6 @@ export class Quoter extends BaseContract {
 
     factory(overrides?: CallOverrides): Promise<BigNumber>;
 
-    pegasysV3SwapCallback(
-      amount0Delta: BigNumberish,
-      amount1Delta: BigNumberish,
-      path: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     quoteExactInput(
       path: BytesLike,
       amountIn: BigNumberish,
@@ -291,6 +284,13 @@ export class Quoter extends BaseContract {
       amountOut: BigNumberish,
       sqrtPriceLimitX96: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    uniswapV3SwapCallback(
+      amount0Delta: BigNumberish,
+      amount1Delta: BigNumberish,
+      path: BytesLike,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
@@ -299,13 +299,6 @@ export class Quoter extends BaseContract {
 
     factory(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    pegasysV3SwapCallback(
-      amount0Delta: BigNumberish,
-      amount1Delta: BigNumberish,
-      path: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     quoteExactInput(
       path: BytesLike,
       amountIn: BigNumberish,
@@ -334,6 +327,13 @@ export class Quoter extends BaseContract {
       amountOut: BigNumberish,
       sqrtPriceLimitX96: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    uniswapV3SwapCallback(
+      amount0Delta: BigNumberish,
+      amount1Delta: BigNumberish,
+      path: BytesLike,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

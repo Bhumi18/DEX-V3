@@ -1,4 +1,4 @@
-import { SimulationStatus } from '@pollum-io/smart-order-router'
+import { SimulationStatus } from 'smartorderrouter18'
 import Logger from 'bunyan'
 
 export const simulationStatusToString = (simulationStatus: SimulationStatus | undefined, log: Logger) => {

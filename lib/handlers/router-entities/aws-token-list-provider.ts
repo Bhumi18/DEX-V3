@@ -5,8 +5,8 @@ import {
   ITokenProvider,
   log,
   NodeJSCache,
-} from '@pollum-io/smart-order-router'
-import { TokenList } from '@uniswap/token-lists'
+} from 'smartorderrouter18'
+import { TokenList } from 'udonswap-token-lists'
 import S3 from 'aws-sdk/clients/s3'
 import NodeCache from 'node-cache'
 

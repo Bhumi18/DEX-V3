@@ -1,7 +1,7 @@
-import { CachedRoutes } from '@pollum-io/smart-order-router'
-import { ChainId } from '@pollum-io/smart-order-router/build/main/util'
-import { TradeType } from '@pollum-io/sdk-core'
-import { Protocol } from '@pollum-io/router-sdk'
+import { CachedRoutes } from 'smartorderrouter18'
+import { ChainId } from 'smartorderrouter18/build/main/util'
+import { TradeType } from 'sdkcore18'
+import { Protocol } from 'routersdk18'
 import { MarshalledToken, TokenMarshaller } from './token-marshaller'
 import { CachedRouteMarshaller, MarshalledCachedRoute } from './cached-route-marshaller'
 

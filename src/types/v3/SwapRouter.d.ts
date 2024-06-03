@@ -29,7 +29,6 @@ interface SwapRouterInterface extends ethers.utils.Interface {
     "exactOutputSingle((address,address,uint24,address,uint256,uint256,uint256,uint160))": FunctionFragment;
     "factory()": FunctionFragment;
     "multicall(bytes[])": FunctionFragment;
-    "pegasysV3SwapCallback(int256,int256,bytes)": FunctionFragment;
     "refundETH()": FunctionFragment;
     "selfPermit(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "selfPermitAllowed(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
@@ -37,6 +36,7 @@ interface SwapRouterInterface extends ethers.utils.Interface {
     "selfPermitIfNecessary(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "sweepToken(address,uint256,address)": FunctionFragment;
     "sweepTokenWithFee(address,uint256,address,uint256,address)": FunctionFragment;
+    "uniswapV3SwapCallback(int256,int256,bytes)": FunctionFragment;
     "unwrapWETH9(uint256,address)": FunctionFragment;
     "unwrapWETH9WithFee(uint256,address,uint256,address)": FunctionFragment;
   };
@@ -101,10 +101,6 @@ interface SwapRouterInterface extends ethers.utils.Interface {
     functionFragment: "multicall",
     values: [BytesLike[]]
   ): string;
-  encodeFunctionData(
-    functionFragment: "pegasysV3SwapCallback",
-    values: [BigNumberish, BigNumberish, BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "refundETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "selfPermit",
@@ -159,6 +155,10 @@ interface SwapRouterInterface extends ethers.utils.Interface {
     values: [string, BigNumberish, string, BigNumberish, string]
   ): string;
   encodeFunctionData(
+    functionFragment: "uniswapV3SwapCallback",
+    values: [BigNumberish, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "unwrapWETH9",
     values: [BigNumberish, string]
   ): string;
@@ -183,10 +183,6 @@ interface SwapRouterInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "multicall", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "pegasysV3SwapCallback",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "refundETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "selfPermit", data: BytesLike): Result;
   decodeFunctionResult(
@@ -204,6 +200,10 @@ interface SwapRouterInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "sweepToken", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "sweepTokenWithFee",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "uniswapV3SwapCallback",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -321,13 +321,6 @@ export class SwapRouter extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    pegasysV3SwapCallback(
-      amount0Delta: BigNumberish,
-      amount1Delta: BigNumberish,
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     refundETH(
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -386,6 +379,13 @@ export class SwapRouter extends BaseContract {
       feeBips: BigNumberish,
       feeRecipient: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    uniswapV3SwapCallback(
+      amount0Delta: BigNumberish,
+      amount1Delta: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     unwrapWETH9(
@@ -462,13 +462,6 @@ export class SwapRouter extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  pegasysV3SwapCallback(
-    amount0Delta: BigNumberish,
-    amount1Delta: BigNumberish,
-    _data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   refundETH(
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -527,6 +520,13 @@ export class SwapRouter extends BaseContract {
     feeBips: BigNumberish,
     feeRecipient: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  uniswapV3SwapCallback(
+    amount0Delta: BigNumberish,
+    amount1Delta: BigNumberish,
+    _data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   unwrapWETH9(
@@ -600,13 +600,6 @@ export class SwapRouter extends BaseContract {
 
     multicall(data: BytesLike[], overrides?: CallOverrides): Promise<string[]>;
 
-    pegasysV3SwapCallback(
-      amount0Delta: BigNumberish,
-      amount1Delta: BigNumberish,
-      _data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     refundETH(overrides?: CallOverrides): Promise<void>;
 
     selfPermit(
@@ -662,6 +655,13 @@ export class SwapRouter extends BaseContract {
       recipient: string,
       feeBips: BigNumberish,
       feeRecipient: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    uniswapV3SwapCallback(
+      amount0Delta: BigNumberish,
+      amount1Delta: BigNumberish,
+      _data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -742,13 +742,6 @@ export class SwapRouter extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    pegasysV3SwapCallback(
-      amount0Delta: BigNumberish,
-      amount1Delta: BigNumberish,
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     refundETH(
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -807,6 +800,13 @@ export class SwapRouter extends BaseContract {
       feeBips: BigNumberish,
       feeRecipient: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    uniswapV3SwapCallback(
+      amount0Delta: BigNumberish,
+      amount1Delta: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     unwrapWETH9(
@@ -884,13 +884,6 @@ export class SwapRouter extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    pegasysV3SwapCallback(
-      amount0Delta: BigNumberish,
-      amount1Delta: BigNumberish,
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     refundETH(
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -949,6 +942,13 @@ export class SwapRouter extends BaseContract {
       feeBips: BigNumberish,
       feeRecipient: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    uniswapV3SwapCallback(
+      amount0Delta: BigNumberish,
+      amount1Delta: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     unwrapWETH9(
