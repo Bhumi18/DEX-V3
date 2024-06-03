@@ -297,8 +297,8 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
     if (this.quoterAddressOverride) {
       return this.quoterAddressOverride;
     }
-    const quoterAddress = !useMixedRouteQuoter
-      ? QUOTER_V2_ADDRESSES[this.chainId] : null;
+    const quoterAddress = useMixedRouteQuoter
+      ? null : QUOTER_V2_ADDRESSES[this.chainId];
 
     if (!quoterAddress) {
       throw new Error(
@@ -464,7 +464,7 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
                     [string, string],
                     [BigNumber, BigNumber[], number[], BigNumber] // amountIn/amountOut, sqrtPriceX96AfterList, initializedTicksCrossedList, gasEstimate
                   >({
-                    address: this.getQuoterAddress(useMixedRouteQuoter),
+                    address: this.getQuoterAddress(false),
                     contractInterface: useMixedRouteQuoter
                       ? IMixedRouteQuoterV1__factory.createInterface()
                       : IQuoterV2__factory.createInterface(),
