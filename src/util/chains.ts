@@ -1,69 +1,67 @@
-import { Ether, NativeCurrency, Token } from '@pollum-io/sdk-core';
+import { Ether, NativeCurrency, Token } from 'sdkcore18';
 
 export enum ChainId {
-  ROLLUX_TANENBAUM = 57000,
-  ROLLUX = 570,
+  MODE = 919
 }
 
 // WIP: Gnosis, Moonbeam
 export const SUPPORTED_CHAINS: ChainId[] = [
-  ChainId.ROLLUX_TANENBAUM,
-  ChainId.ROLLUX,
+  ChainId.MODE
 ];
 
-export const V2_SUPPORTED = [ChainId.ROLLUX_TANENBAUM, ChainId.ROLLUX];
+// export const V2_SUPPORTED = [ChainId.ROLLUX_TANENBAUM, ChainId.ROLLUX];
 
 export const HAS_L1_FEE: ChainId[] = []; //TODO: add rollux
 
-export const NETWORKS_WITH_SAME_UNISWAP_ADDRESSES = [
-  ChainId.ROLLUX,
-  ChainId.ROLLUX_TANENBAUM,
-];
+// export const NETWORKS_WITH_SAME_UNISWAP_ADDRESSES = [
+//   ChainId.ROLLUX,
+//   ChainId.ROLLUX_TANENBAUM,
+// ];
 
 export const ID_TO_CHAIN_ID = (id: number): ChainId => {
   switch (id) {
-    case 570:
-      return ChainId.ROLLUX;
-    case 57000:
-      return ChainId.ROLLUX_TANENBAUM;
+    case 919:
+      return ChainId.MODE;
+    // case 57000:
+    //   return ChainId.ROLLUX_TANENBAUM;
     default:
       throw new Error(`Unknown chain id: ${id}`);
   }
 };
 
 export enum ChainName {
-  ROLLUX = 'rollux',
-  ROLLUX_TANENBAUM = 'rollux-tanenbaum',
+  MODE = 'mode'
 }
 
 export enum NativeCurrencyName {
   // Strings match input for CLI
-  SYS = 'SYS',
+  ETH = "ETH",
 }
 export const NATIVE_NAMES_BY_ID: { [chainId: number]: string[] } = {
-  [ChainId.ROLLUX]: [
-    'SYS',
-    'Syscoin',
+  [ChainId.MODE]: [
+    'ETH',
+    'Ether',
     '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   ],
-  [ChainId.ROLLUX_TANENBAUM]: [
-    'SYS',
-    'Syscoin',
-    '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-  ],
+  // [ChainId.ROLLUX_TANENBAUM]: [
+  //   'SYS',
+  //   'Syscoin',
+  //   '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+  // ],
 };
 
 export const NATIVE_CURRENCY: { [chainId: number]: NativeCurrencyName } = {
-  [ChainId.ROLLUX]: NativeCurrencyName.SYS,
-  [ChainId.ROLLUX_TANENBAUM]: NativeCurrencyName.SYS,
+  [ChainId.MODE]: NativeCurrencyName.ETH
+  // [ChainId.ROLLUX]: NativeCurrencyName.SYS,
+  // [ChainId.ROLLUX_TANENBAUM]: NativeCurrencyName.SYS,
 };
 
 export const ID_TO_NETWORK_NAME = (id: number): ChainName => {
   switch (id) {
-    case 570:
-      return ChainName.ROLLUX;
-    case 57000:
-      return ChainName.ROLLUX_TANENBAUM;
+    case 919:
+      return ChainName.MODE;
+    // case 57000:
+    //   return ChainName.ROLLUX_TANENBAUM;
     default:
       throw new Error(`Unknown chain id: ${id}`);
   }
@@ -75,10 +73,10 @@ export const CHAIN_IDS_LIST = Object.values(ChainId).map((c) =>
 
 export const ID_TO_PROVIDER = (id: ChainId): string => {
   switch (id) {
-    case ChainId.ROLLUX:
-      return 'https://rpc.rollux.com/'!;
-    case ChainId.ROLLUX_TANENBAUM:
-      return 'https://rpc-tanenbaum.rollux.com/'!;
+    case ChainId.MODE:
+      return 'https://sepolia.mode.network	'!;
+    // case ChainId.ROLLUX_TANENBAUM:
+    //   return 'https://rpc-tanenbaum.rollux.com/'!;
 
     default:
       throw new Error(`Chain id: ${id} not supported`);
@@ -86,21 +84,21 @@ export const ID_TO_PROVIDER = (id: ChainId): string => {
 };
 
 export const WRAPPED_NATIVE_CURRENCY: { [chainId in ChainId]: Token } = {
-  [ChainId.ROLLUX]: new Token(
-    ChainId.ROLLUX,
+  [ChainId.MODE]: new Token(
+    ChainId.MODE,
     '0x4200000000000000000000000000000000000006',
     18,
-    'WSYS',
-    'Wrapped Syscoin'
+    'WETH',
+    'Wrapped Ether'
   ),
 
-  [ChainId.ROLLUX_TANENBAUM]: new Token(
-    ChainId.ROLLUX_TANENBAUM,
-    '0x4200000000000000000000000000000000000006',
-    18,
-    'WSYS',
-    'Wrapped Syscoin'
-  ),
+  // [ChainId.ROLLUX_TANENBAUM]: new Token(
+  //   ChainId.ROLLUX_TANENBAUM,
+  //   '0x4200000000000000000000000000000000000006',
+  //   18,
+  //   'WSYS',
+  //   'Wrapped Syscoin'
+  // ),
 };
 
 export class ExtendedEther extends Ether {

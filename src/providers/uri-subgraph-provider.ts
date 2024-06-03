@@ -5,7 +5,7 @@ import axios from 'axios';
 import { ChainId } from '../util/chains';
 import { log } from '../util/log';
 
-import { V2SubgraphPool } from './v2/subgraph-provider';
+// import { V2SubgraphPool } from './v2/subgraph-provider';
 import { V3SubgraphPool } from './v3/subgraph-provider';
 
 /**
@@ -18,14 +18,14 @@ import { V3SubgraphPool } from './v3/subgraph-provider';
  * @template TSubgraphPool
  */
 export class URISubgraphProvider<
-  TSubgraphPool extends V2SubgraphPool | V3SubgraphPool
+  TSubgraphPool extends V3SubgraphPool
 > {
   constructor(
     private chainId: ChainId,
     private uri: string,
     private timeout = 6000,
     private retries = 2
-  ) {}
+  ) { }
 
   public async getPools(): Promise<TSubgraphPool[]> {
     log.info(

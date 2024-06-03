@@ -68,11 +68,11 @@ export class QuoteToRatio extends BaseCommand {
     const chainId = ID_TO_CHAIN_ID(chainIdNumb);
     // TODO add support for polygon
     const token0: Currency =
-      token0Str == 'SYS'
+      token0Str == 'ETH'
         ? Ether.onChain(chainId)
         : tokenAccessor.getTokenByAddress(token0Str)!;
     const token1: Currency =
-      token1Str == 'WSYS'
+      token1Str == 'WETH'
         ? Ether.onChain(chainId)
         : tokenAccessor.getTokenByAddress(token1Str)!;
 

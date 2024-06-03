@@ -7,8 +7,8 @@ export const DEFAULT_ROUTING_CONFIG_BY_CHAIN = (
 ): AlphaRouterConfig => {
   switch (chainId) {
     // Optimism
-    case ChainId.ROLLUX:
-    case ChainId.ROLLUX_TANENBAUM:
+    case ChainId.MODE:
+      // case ChainId.ROLLUX_TANENBAUM:
       return {
         v2PoolSelection: {
           topN: 3,

@@ -1,36 +1,36 @@
-import { Token } from '@pollum-io/sdk-core';
+import { Token } from 'sdkcore18';
 import _ from 'lodash';
 
 import { ChainId, log, WRAPPED_NATIVE_CURRENCY } from '../util';
 
 import { ICache } from './cache';
 import {
-  DAI_ROLLUX,
-  DAI_ROLLUX_TANENBAUM,
+  DAI_MODE,
+  // DAI_ROLLUX_TANENBAUM,
   ITokenProvider,
   TokenAccessor,
-  USDC_ROLLUX,
-  USDC_ROLLUX_TANENBAUM,
-  USDT_ROLLUX,
-  USDT_ROLLUX_TANENBAUM,
+  USDC_MODE,
+  // USDC_ROLLUX_TANENBAUM,
+  USDT_MODE,
+  // USDT_ROLLUX_TANENBAUM,
 } from './token-provider';
 
 // These tokens will added to the Token cache on initialization.
 export const CACHE_SEED_TOKENS: {
   [chainId in ChainId]?: { [symbol: string]: Token };
 } = {
-  [ChainId.ROLLUX]: {
-    WSYS: WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX]!,
-    USDC: USDC_ROLLUX,
-    USDT: USDT_ROLLUX,
-    DAI: DAI_ROLLUX,
+  [ChainId.MODE]: {
+    WETH: WRAPPED_NATIVE_CURRENCY[ChainId.MODE]!,
+    USDC: USDC_MODE,
+    USDT: USDT_MODE,
+    DAI: DAI_MODE,
   },
-  [ChainId.ROLLUX_TANENBAUM]: {
-    WSYS: WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TANENBAUM]!,
-    USDC: USDC_ROLLUX_TANENBAUM,
-    USDT: USDT_ROLLUX_TANENBAUM,
-    DAI: DAI_ROLLUX_TANENBAUM,
-  },
+  // [ChainId.ROLLUX_TANENBAUM]: {
+  //   WSYS: WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TANENBAUM]!,
+  //   USDC: USDC_ROLLUX_TANENBAUM,
+  //   USDT: USDT_ROLLUX_TANENBAUM,
+  //   DAI: DAI_ROLLUX_TANENBAUM,
+  // },
 
   // Currently we do not have providers for Moonbeam mainnet or Gnosis testnet
 };
@@ -53,7 +53,7 @@ export class CachingTokenProviderWithFallback implements ITokenProvider {
     private tokenCache: ICache<Token>,
     protected primaryTokenProvider: ITokenProvider,
     protected fallbackTokenProvider?: ITokenProvider
-  ) {}
+  ) { }
 
   public async getTokens(_addresses: string[]): Promise<TokenAccessor> {
     const seedTokens = CACHE_SEED_TOKENS[this.chainId];
@@ -92,12 +92,10 @@ export class CachingTokenProviderWithFallback implements ITokenProvider {
 
     log.info(
       { addressesToFindInPrimary },
-      `Found ${addresses.length - addressesToFindInPrimary.length} out of ${
-        addresses.length
-      } tokens in local cache. ${
-        addressesToFindInPrimary.length > 0
-          ? `Checking primary token provider for ${addressesToFindInPrimary.length} tokens`
-          : ``
+      `Found ${addresses.length - addressesToFindInPrimary.length} out of ${addresses.length
+      } tokens in local cache. ${addressesToFindInPrimary.length > 0
+        ? `Checking primary token provider for ${addressesToFindInPrimary.length} tokens`
+        : ``
       }
       `
     );
@@ -124,12 +122,10 @@ export class CachingTokenProviderWithFallback implements ITokenProvider {
 
       log.info(
         { addressesToFindInSecondary },
-        `Found ${
-          addressesToFindInPrimary.length - addressesToFindInSecondary.length
-        } tokens in primary. ${
-          this.fallbackTokenProvider
-            ? `Checking secondary token provider for ${addressesToFindInSecondary.length} tokens`
-            : `No fallback token provider specified. About to return.`
+        `Found ${addressesToFindInPrimary.length - addressesToFindInSecondary.length
+        } tokens in primary. ${this.fallbackTokenProvider
+          ? `Checking secondary token provider for ${addressesToFindInSecondary.length} tokens`
+          : `No fallback token provider specified. About to return.`
         }`
       );
     }

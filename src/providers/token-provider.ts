@@ -1,4 +1,4 @@
-import { Token } from '@pollum-io/sdk-core';
+import { Token } from 'sdkcore18';
 import _ from 'lodash';
 
 import { IERC20Metadata__factory } from '../types/v3/factories/IERC20Metadata__factory';
@@ -33,64 +33,72 @@ export type TokenAccessor = {
   getAllTokens: () => Token[];
 };
 
-export const USDC_ROLLUX = new Token(
-  ChainId.ROLLUX,
-  '0x368433CaC2A0B8D76E64681a9835502a1f2A8A30',
+export const USDC_MODE = new Token(
+  ChainId.MODE,
+  '0x4Cc496ca61683944f20a1C4796761273EE74FB62',
   6,
   'USDC',
-  'USD//C'
+  'USD Coin'
 );
-export const USDT_ROLLUX = new Token(
-  ChainId.ROLLUX,
-  '0x28c9c7Fb3fE3104d2116Af26cC8eF7905547349c',
+export const USDT_MODE = new Token(
+  ChainId.MODE,
+  '0x4E6E66560165771FE0E15435367f8318bA2748Ec',
   6,
   'USDT',
   'Tether USD'
 );
-export const DAI_ROLLUX = new Token(
-  ChainId.ROLLUX,
-  '0x5B0aC6194499621630ddebb30c4aBE37037b30Ec',
+export const DAI_MODE = new Token(
+  ChainId.MODE,
+  '0x0f117Da8c078B83AD4136f0cF2e5058dAddb1151',
   18,
   'DAI',
-  'Dai Stablecoin'
+  'DAI'
 );
-export const PSYS_ROLLUX = new Token(
-  ChainId.ROLLUX,
-  '0x48023b16c3e81AA7F6eFFbdEB35Bb83f4f31a8fd',
-  18,
-  'PSYS',
-  'Pegasys'
+// export const PSYS_ROLLUX = new Token(
+//   ChainId.ROLLUX,
+//   '0x48023b16c3e81AA7F6eFFbdEB35Bb83f4f31a8fd',
+//   18,
+//   'PSYS',
+//   'Pegasys'
+// );
+
+export const WBTC_MODE = new Token(
+  ChainId.MODE,
+  '0x2aB8A15f4E5B19882D6D1aDd1C0Ecf50b3deB8a6',
+  8,
+  'WBTC',
+  'Wrapped Bitcoin'
 );
 
 // Some well known tokens on each chain for seeding cache / testing.
-export const USDC_ROLLUX_TANENBAUM = new Token(
-  ChainId.ROLLUX_TANENBAUM,
-  '0x2Be160796F509CC4B1d76fc97494D56CF109C3f1',
-  6,
-  'USDC',
-  'USD//C'
-);
-export const USDT_ROLLUX_TANENBAUM = new Token(
-  ChainId.ROLLUX_TANENBAUM,
-  '0xb97915AED8B5996dE24Ce760EC8DE5A91E820dF7',
-  6,
-  'USDT',
-  'Tether USD'
-);
-export const DAI_ROLLUX_TANENBAUM = new Token(
-  ChainId.ROLLUX_TANENBAUM,
-  '0xccA991E1Bdca2846640d366116d60BC25C2815db',
-  18,
-  'DAI',
-  'Dai Stablecoin'
-);
-export const PSYS_ROLLUX_TANENBAUM = new Token(
-  ChainId.ROLLUX_TANENBAUM,
-  '0x817C777DEf2Fd6ffE2492C6CD124985C78Ee9235',
-  18,
-  'PSYS',
-  'Pegasys'
-);
+// export const USDC_ROLLUX_TANENBAUM = new Token(
+//   ChainId.ROLLUX_TANENBAUM,
+//   '0x2Be160796F509CC4B1d76fc97494D56CF109C3f1',
+//   6,
+//   'USDC',
+//   'USD//C'
+// );
+// export const USDT_ROLLUX_TANENBAUM = new Token(
+//   ChainId.ROLLUX_TANENBAUM,
+//   '0xb97915AED8B5996dE24Ce760EC8DE5A91E820dF7',
+//   6,
+//   'USDT',
+//   'Tether USD'
+// );
+// export const DAI_ROLLUX_TANENBAUM = new Token(
+//   ChainId.ROLLUX_TANENBAUM,
+//   '0xccA991E1Bdca2846640d366116d60BC25C2815db',
+//   18,
+//   'DAI',
+//   'Dai Stablecoin'
+// );
+// export const PSYS_ROLLUX_TANENBAUM = new Token(
+//   ChainId.ROLLUX_TANENBAUM,
+//   '0x817C777DEf2Fd6ffE2492C6CD124985C78Ee9235',
+//   18,
+//   'PSYS',
+//   'Pegasys'
+// );
 
 export class TokenProvider implements ITokenProvider {
   constructor(
@@ -188,10 +196,10 @@ export class TokenProvider implements ITokenProvider {
 
 export const DAI_ON = (chainId: ChainId): Token => {
   switch (chainId) {
-    case ChainId.ROLLUX:
-      return DAI_ROLLUX;
-    case ChainId.ROLLUX_TANENBAUM:
-      return DAI_ROLLUX_TANENBAUM;
+    case ChainId.MODE:
+      return DAI_MODE;
+    // case ChainId.ROLLUX_TANENBAUM:
+    //   return DAI_ROLLUX_TANENBAUM;
     default:
       throw new Error(`Chain id: ${chainId} not supported`);
   }
@@ -199,10 +207,10 @@ export const DAI_ON = (chainId: ChainId): Token => {
 
 export const USDT_ON = (chainId: ChainId): Token => {
   switch (chainId) {
-    case ChainId.ROLLUX:
-      return USDT_ROLLUX;
-    case ChainId.ROLLUX_TANENBAUM:
-      return USDT_ROLLUX_TANENBAUM;
+    case ChainId.MODE:
+      return USDT_MODE;
+    // case ChainId.ROLLUX_TANENBAUM:
+    //   return USDT_ROLLUX_TANENBAUM;
     default:
       throw new Error(`Chain id: ${chainId} not supported`);
   }
@@ -210,10 +218,10 @@ export const USDT_ON = (chainId: ChainId): Token => {
 
 export const USDC_ON = (chainId: ChainId): Token => {
   switch (chainId) {
-    case ChainId.ROLLUX:
-      return USDC_ROLLUX;
-    case ChainId.ROLLUX_TANENBAUM:
-      return USDC_ROLLUX_TANENBAUM;
+    case ChainId.MODE:
+      return USDC_MODE;
+    // case ChainId.ROLLUX_TANENBAUM:
+    //   return USDC_ROLLUX_TANENBAUM;
     default:
       throw new Error(`Chain id: ${chainId} not supported`);
   }

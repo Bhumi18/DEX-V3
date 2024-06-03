@@ -1,28 +1,28 @@
 import {
-  MixedRouteSDK,
+  // MixedRouteSDK,
   Protocol,
   SwapRouter as SwapRouter02,
   Trade,
-} from '@pollum-io/router-sdk';
-import { Currency, TradeType } from '@pollum-io/sdk-core';
+} from 'routersdk18';
+import { Currency, TradeType } from 'sdkcore18';
 import {
   SwapRouter as UniveralRouter,
   UNIVERSAL_ROUTER_ADDRESS,
-} from '@pollum-io/universal-router-sdk';
-import { Route as V1RouteRaw } from '@pollum-io/v1-sdk';
-import { Route as V3RouteRaw } from '@pollum-io/v3-sdk';
+} from 'universalroutersdk18';
+// import { Route as V1RouteRaw } from '@pollum-io/v1-sdk';
+import { Route as V3RouteRaw } from 'v3sdk18';
 import _ from 'lodash';
 
 import {
   ChainId,
   CurrencyAmount,
   MethodParameters,
-  MixedRouteWithValidQuote,
+  // MixedRouteWithValidQuote,
   RouteWithValidQuote,
   SWAP_ROUTER_02_ADDRESSES,
   SwapOptions,
   SwapType,
-  V1RouteWithValidQuote,
+  // V1RouteWithValidQuote,
   V3RouteWithValidQuote,
 } from '..';
 
@@ -37,19 +37,19 @@ export function buildTrade<TTradeType extends TradeType>(
     routeAmounts,
     (routeAmount) => routeAmount.protocol === Protocol.V3
   );
-  const v2RouteAmounts = _.filter(
-    routeAmounts,
-    (routeAmount) => routeAmount.protocol === Protocol.V1
-  );
-  const mixedRouteAmounts = _.filter(
-    routeAmounts,
-    (routeAmount) => routeAmount.protocol === Protocol.MIXED
-  );
+  // const v2RouteAmounts = _.filter(
+  //   routeAmounts,
+  //   (routeAmount) => routeAmount.protocol === Protocol.V1
+  // );
+  // const mixedRouteAmounts = _.filter(
+  //   routeAmounts,
+  //   (routeAmount) => routeAmount.protocol === Protocol.MIXED
+  // );
 
-  const v3Routes = _.map<
+  const v2Routes = _.map<
     V3RouteWithValidQuote,
     {
-      routev3: V3RouteRaw<Currency, Currency>;
+      routev2: V3RouteRaw<Currency, Currency>;
       inputAmount: CurrencyAmount;
       outputAmount: CurrencyAmount;
     }
@@ -80,7 +80,7 @@ export function buildTrade<TTradeType extends TradeType>(
         );
 
         return {
-          routev3: routeRaw,
+          routev2: routeRaw,
           inputAmount: amountCurrency,
           outputAmount: quoteCurrency,
         };
@@ -104,7 +104,7 @@ export function buildTrade<TTradeType extends TradeType>(
         );
 
         return {
-          routev3: routeCurrency,
+          routev2: routeCurrency,
           inputAmount: quoteCurrency,
           outputAmount: amountCurrency,
         };
@@ -112,119 +112,119 @@ export function buildTrade<TTradeType extends TradeType>(
     }
   );
 
-  const v1Routes = _.map<
-    V1RouteWithValidQuote,
-    {
-      routev1: V1RouteRaw<Currency, Currency>;
-      inputAmount: CurrencyAmount;
-      outputAmount: CurrencyAmount;
-    }
-  >(
-    v2RouteAmounts as V1RouteWithValidQuote[],
-    (routeAmount: V1RouteWithValidQuote) => {
-      const { route, amount, quote } = routeAmount;
+  // const v1Routes = _.map<
+  //   V1RouteWithValidQuote,
+  //   {
+  //     routev1: V1RouteRaw<Currency, Currency>;
+  //     inputAmount: CurrencyAmount;
+  //     outputAmount: CurrencyAmount;
+  //   }
+  // >(
+  //   v2RouteAmounts as V1RouteWithValidQuote[],
+  //   (routeAmount: V1RouteWithValidQuote) => {
+  //     const { route, amount, quote } = routeAmount;
 
-      // The route, amount and quote are all in terms of wrapped tokens.
-      // When constructing the Trade object the inputAmount/outputAmount must
-      // use native currencies if specified by the user. This is so that the Trade knows to wrap/unwrap.
-      if (tradeType == TradeType.EXACT_INPUT) {
-        const amountCurrency = CurrencyAmount.fromFractionalAmount(
-          tokenInCurrency,
-          amount.numerator,
-          amount.denominator
-        );
-        const quoteCurrency = CurrencyAmount.fromFractionalAmount(
-          tokenOutCurrency,
-          quote.numerator,
-          quote.denominator
-        );
+  //     // The route, amount and quote are all in terms of wrapped tokens.
+  //     // When constructing the Trade object the inputAmount/outputAmount must
+  //     // use native currencies if specified by the user. This is so that the Trade knows to wrap/unwrap.
+  //     if (tradeType == TradeType.EXACT_INPUT) {
+  //       const amountCurrency = CurrencyAmount.fromFractionalAmount(
+  //         tokenInCurrency,
+  //         amount.numerator,
+  //         amount.denominator
+  //       );
+  //       const quoteCurrency = CurrencyAmount.fromFractionalAmount(
+  //         tokenOutCurrency,
+  //         quote.numerator,
+  //         quote.denominator
+  //       );
 
-        const routeV2SDK = new V1RouteRaw(
-          route.pairs,
-          amountCurrency.currency,
-          quoteCurrency.currency
-        );
+  //       const routeV2SDK = new V1RouteRaw(
+  //         route.pairs,
+  //         amountCurrency.currency,
+  //         quoteCurrency.currency
+  //       );
 
-        return {
-          routev1: routeV2SDK,
-          inputAmount: amountCurrency,
-          outputAmount: quoteCurrency,
-        };
-      } else {
-        const quoteCurrency = CurrencyAmount.fromFractionalAmount(
-          tokenInCurrency,
-          quote.numerator,
-          quote.denominator
-        );
+  //       return {
+  //         routev1: routeV2SDK,
+  //         inputAmount: amountCurrency,
+  //         outputAmount: quoteCurrency,
+  //       };
+  //     } else {
+  //       const quoteCurrency = CurrencyAmount.fromFractionalAmount(
+  //         tokenInCurrency,
+  //         quote.numerator,
+  //         quote.denominator
+  //       );
 
-        const amountCurrency = CurrencyAmount.fromFractionalAmount(
-          tokenOutCurrency,
-          amount.numerator,
-          amount.denominator
-        );
+  //       const amountCurrency = CurrencyAmount.fromFractionalAmount(
+  //         tokenOutCurrency,
+  //         amount.numerator,
+  //         amount.denominator
+  //       );
 
-        const routeV2SDK = new V1RouteRaw(
-          route.pairs,
-          quoteCurrency.currency,
-          amountCurrency.currency
-        );
+  //       const routeV2SDK = new V1RouteRaw(
+  //         route.pairs,
+  //         quoteCurrency.currency,
+  //         amountCurrency.currency
+  //       );
 
-        return {
-          routev1: routeV2SDK,
-          inputAmount: quoteCurrency,
-          outputAmount: amountCurrency,
-        };
-      }
-    }
-  );
+  //       return {
+  //         routev1: routeV2SDK,
+  //         inputAmount: quoteCurrency,
+  //         outputAmount: amountCurrency,
+  //       };
+  //     }
+  //   }
+  // );
 
-  const mixedRoutes = _.map<
-    MixedRouteWithValidQuote,
-    {
-      mixedRoute: MixedRouteSDK<Currency, Currency>;
-      inputAmount: CurrencyAmount;
-      outputAmount: CurrencyAmount;
-    }
-  >(
-    mixedRouteAmounts as MixedRouteWithValidQuote[],
-    (routeAmount: MixedRouteWithValidQuote) => {
-      const { route, amount, quote } = routeAmount;
+  // const mixedRoutes = _.map<
+  //   MixedRouteWithValidQuote,
+  //   {
+  //     mixedRoute: MixedRouteSDK<Currency, Currency>;
+  //     inputAmount: CurrencyAmount;
+  //     outputAmount: CurrencyAmount;
+  //   }
+  // >(
+  //   mixedRouteAmounts as MixedRouteWithValidQuote[],
+  //   (routeAmount: MixedRouteWithValidQuote) => {
+  //     const { route, amount, quote } = routeAmount;
 
-      if (tradeType != TradeType.EXACT_INPUT) {
-        throw new Error(
-          'Mixed routes are only supported for exact input trades'
-        );
-      }
+  //     if (tradeType != TradeType.EXACT_INPUT) {
+  //       throw new Error(
+  //         'Mixed routes are only supported for exact input trades'
+  //       );
+  //     }
 
-      // The route, amount and quote are all in terms of wrapped tokens.
-      // When constructing the Trade object the inputAmount/outputAmount must
-      // use native currencies if specified by the user. This is so that the Trade knows to wrap/unwrap.
-      const amountCurrency = CurrencyAmount.fromFractionalAmount(
-        tokenInCurrency,
-        amount.numerator,
-        amount.denominator
-      );
-      const quoteCurrency = CurrencyAmount.fromFractionalAmount(
-        tokenOutCurrency,
-        quote.numerator,
-        quote.denominator
-      );
+  //     // The route, amount and quote are all in terms of wrapped tokens.
+  //     // When constructing the Trade object the inputAmount/outputAmount must
+  //     // use native currencies if specified by the user. This is so that the Trade knows to wrap/unwrap.
+  //     const amountCurrency = CurrencyAmount.fromFractionalAmount(
+  //       tokenInCurrency,
+  //       amount.numerator,
+  //       amount.denominator
+  //     );
+  //     const quoteCurrency = CurrencyAmount.fromFractionalAmount(
+  //       tokenOutCurrency,
+  //       quote.numerator,
+  //       quote.denominator
+  //     );
 
-      const routeRaw = new MixedRouteSDK(
-        route.pools,
-        amountCurrency.currency,
-        quoteCurrency.currency
-      );
+  //     const routeRaw = new MixedRouteSDK(
+  //       route.pools,
+  //       amountCurrency.currency,
+  //       quoteCurrency.currency
+  //     );
 
-      return {
-        mixedRoute: routeRaw,
-        inputAmount: amountCurrency,
-        outputAmount: quoteCurrency,
-      };
-    }
-  );
+  //     return {
+  //       mixedRoute: routeRaw,
+  //       inputAmount: amountCurrency,
+  //       outputAmount: quoteCurrency,
+  //     };
+  //   }
+  // );
 
-  const trade = new Trade({ v1Routes, v3Routes, mixedRoutes, tradeType });
+  const trade = new Trade({ v2Routes, tradeType });
 
   return trade;
 }

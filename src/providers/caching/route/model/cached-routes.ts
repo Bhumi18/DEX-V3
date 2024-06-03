@@ -1,11 +1,11 @@
-import { Protocol } from '@pollum-io/router-sdk';
-import { Token, TradeType } from '@pollum-io/sdk-core';
+import { Protocol } from 'routersdk18';
+import { Token, TradeType } from 'sdkcore18';
 import _ from 'lodash';
 
 import {
-  MixedRoute,
+  // MixedRoute,
   RouteWithValidQuote,
-  V1Route,
+  // V1Route,
   V3Route,
 } from '../../../../routers';
 import { ChainId } from '../../../../util';
@@ -13,7 +13,7 @@ import { ChainId } from '../../../../util';
 import { CachedRoute } from './cached-route';
 
 interface CachedRoutesParams {
-  routes: CachedRoute<V3Route | V1Route | MixedRoute>[];
+  routes: CachedRoute<V3Route>[];
   chainId: ChainId;
   tokenIn: Token;
   tokenOut: Token;
@@ -31,7 +31,7 @@ interface CachedRoutesParams {
  * @class CachedRoute
  */
 export class CachedRoutes {
-  public readonly routes: CachedRoute<V3Route | V1Route | MixedRoute>[];
+  public readonly routes: CachedRoute<V3Route>[];
   public readonly chainId: ChainId;
   public readonly tokenIn: Token;
   public readonly tokenOut: Token;

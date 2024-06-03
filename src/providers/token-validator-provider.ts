@@ -1,4 +1,4 @@
-import { Token } from '@pollum-io/sdk-core';
+import { Token } from 'sdkcore18';
 import _ from 'lodash';
 
 import { ITokenValidator__factory } from '../types/other/factories/ITokenValidator__factory';
@@ -23,7 +23,7 @@ export interface TokenValidationResults {
   getValidationByToken(token: Token): TokenValidationResult | undefined;
 }
 
-const TOKEN_VALIDATOR_ADDRESS = '0xb5ee1690b7dcc7859771148d0889be838fe108e0';
+const TOKEN_VALIDATOR_ADDRESS = '0x0a65cedcbcdc27392cb4a4a7589f3a2021dd3a3c'; // mode
 const AMOUNT_TO_FLASH_BORROW = '1000';
 const GAS_LIMIT_PER_VALIDATE = 1_000_000;
 
@@ -95,8 +95,7 @@ export class TokenValidatorProvider implements ITokenValidatorProvider {
     }
 
     log.info(
-      `Got token validation results for ${
-        addressesRaw.length - addresses.length
+      `Got token validation results for ${addressesRaw.length - addresses.length
       } tokens from cache. Getting ${addresses.length} on-chain.`
     );
 

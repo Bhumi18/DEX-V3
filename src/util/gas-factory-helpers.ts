@@ -1,16 +1,16 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Protocol } from '@pollum-io/router-sdk';
+import { Protocol } from 'routersdk18';
 import {
   Currency,
   CurrencyAmount,
   Token,
   TradeType,
-} from '@pollum-io/sdk-core';
-import { Pair } from '@pollum-io/v1-sdk/dist/entities';
-import { FeeAmount, Pool } from '@pollum-io/v3-sdk';
+} from 'sdkcore18';
+// import { Pair } from '@pollum-io/v1-sdk/dist/entities';
+import { FeeAmount, Pool } from 'v3sdk18';
 import _ from 'lodash';
 
-import { IV2PoolProvider } from '../providers';
+// import { IV2PoolProvider } from '../providers';
 import {
   ArbitrumGasData,
   OptimismGasData,
@@ -18,42 +18,42 @@ import {
 import { IV3PoolProvider } from '../providers/v3/pool-provider';
 import {
   MethodParameters,
-  MixedRouteWithValidQuote,
+  // MixedRouteWithValidQuote,
   SwapRoute,
   usdGasTokensByChain,
-  V1RouteWithValidQuote,
+  // V1RouteWithValidQuote,
   V3RouteWithValidQuote,
 } from '../routers';
 import { ChainId, log, WRAPPED_NATIVE_CURRENCY } from '../util';
 
 import { buildTrade } from './methodParameters';
 
-export async function getV2NativePool(
-  token: Token,
-  poolProvider: IV2PoolProvider
-): Promise<Pair | null> {
-  const chainId = token.chainId as ChainId;
-  const weth = WRAPPED_NATIVE_CURRENCY[chainId]!;
+// export async function getV2NativePool(
+//   token: Token,
+//   poolProvider: IV2PoolProvider
+// ): Promise<Pair | null> {
+//   const chainId = token.chainId as ChainId;
+//   const weth = WRAPPED_NATIVE_CURRENCY[chainId]!;
 
-  const poolAccessor = await poolProvider.getPools([[weth, token]]);
-  const pool = poolAccessor.getPool(weth, token);
+//   const poolAccessor = await poolProvider.getPools([[weth, token]]);
+//   const pool = poolAccessor.getPool(weth, token);
 
-  if (!pool || pool.reserve0.equalTo(0) || pool.reserve1.equalTo(0)) {
-    log.error(
-      {
-        weth,
-        token,
-        reserve0: pool?.reserve0.toExact(),
-        reserve1: pool?.reserve1.toExact(),
-      },
-      `Could not find a valid WETH V2 pool with ${token.symbol} for computing gas costs.`
-    );
+//   if (!pool || pool.reserve0.equalTo(0) || pool.reserve1.equalTo(0)) {
+//     log.error(
+//       {
+//         weth,
+//         token,
+//         reserve0: pool?.reserve0.toExact(),
+//         reserve1: pool?.reserve1.toExact(),
+//       },
+//       `Could not find a valid WETH V2 pool with ${token.symbol} for computing gas costs.`
+//     );
 
-    return null;
-  }
+//     return null;
+//   }
 
-  return pool;
-}
+//   return pool;
+// }
 
 export async function getHighestLiquidityV3NativePool(
   token: Token,
@@ -192,7 +192,7 @@ export function getGasCostInNativeCurrency(
 
 export async function getGasCostInQuoteToken(
   quoteToken: Token,
-  nativePool: Pool | Pair,
+  nativePool: Pool,
   costNativeCurrency: CurrencyAmount<Token>
 ) {
   const nativeTokenPrice =
@@ -255,7 +255,7 @@ export async function calculateGasUsed(
   chainId: ChainId,
   route: SwapRoute,
   simulatedGasUsed: BigNumber,
-  v2PoolProvider: IV2PoolProvider,
+  // v2PoolProvider: IV2PoolProvider,
   v3PoolProvider: IV3PoolProvider,
   l2GasData?: ArbitrumGasData | OptimismGasData
 ) {
@@ -263,7 +263,7 @@ export async function calculateGasUsed(
   const gasPriceWei = route.gasPriceWei;
   // calculate L2 to L1 security fee if relevant
   let l2toL1FeeInWei = BigNumber.from(0);
-  if ([ChainId.ROLLUX, ChainId.ROLLUX_TANENBAUM].includes(chainId)) {
+  if ([ChainId.MODE].includes(chainId)) {
     l2toL1FeeInWei = calculateOptimismToL1FeeFromCalldata(
       route.methodParameters!.calldata,
       l2GasData as OptimismGasData
@@ -290,7 +290,7 @@ export async function calculateGasUsed(
   if (!quoteToken.equals(nativeCurrency)) {
     const nativePools = await Promise.all([
       getHighestLiquidityV3NativePool(quoteToken, v3PoolProvider),
-      getV2NativePool(quoteToken, v2PoolProvider),
+      // getV2NativePool(quoteToken, v2PoolProvider),
     ]);
     const nativePool = nativePools.find((pool) => pool !== null);
 
@@ -327,7 +327,7 @@ export async function calculateGasUsed(
 
 export function initSwapRouteFromExisting(
   swapRoute: SwapRoute,
-  v2PoolProvider: IV2PoolProvider,
+  // v2PoolProvider: IV2PoolProvider,
   v3PoolProvider: IV3PoolProvider,
   quoteGasAdjusted: CurrencyAmount<Currency>,
   estimatedGasUsed: BigNumber,
@@ -367,54 +367,54 @@ export function initSwapRouteFromExisting(
           tradeType: tradeType,
           v3PoolProvider: v3PoolProvider,
         });
-      case Protocol.V1:
-        return new V1RouteWithValidQuote({
-          amount: CurrencyAmount.fromFractionalAmount(
-            route.amount.currency,
-            route.amount.numerator,
-            route.amount.denominator
-          ),
-          rawQuote: BigNumber.from(route.rawQuote),
-          percent: route.percent,
-          route: route.route,
-          gasModel: route.gasModel,
-          quoteToken: new Token(
-            currencyIn.chainId,
-            route.quoteToken.address,
-            route.quoteToken.decimals,
-            route.quoteToken.symbol,
-            route.quoteToken.name
-          ),
-          tradeType: tradeType,
-          v2PoolProvider: v2PoolProvider,
-        });
-      case Protocol.MIXED:
-        return new MixedRouteWithValidQuote({
-          amount: CurrencyAmount.fromFractionalAmount(
-            route.amount.currency,
-            route.amount.numerator,
-            route.amount.denominator
-          ),
-          rawQuote: BigNumber.from(route.rawQuote),
-          sqrtPriceX96AfterList: route.sqrtPriceX96AfterList.map((num) =>
-            BigNumber.from(num)
-          ),
-          initializedTicksCrossedList: [...route.initializedTicksCrossedList],
-          quoterGasEstimate: BigNumber.from(route.gasEstimate),
-          percent: route.percent,
-          route: route.route,
-          mixedRouteGasModel: route.gasModel,
-          v2PoolProvider,
-          quoteToken: new Token(
-            currencyIn.chainId,
-            route.quoteToken.address,
-            route.quoteToken.decimals,
-            route.quoteToken.symbol,
-            route.quoteToken.name
-          ),
-          tradeType: tradeType,
-          v3PoolProvider: v3PoolProvider,
-        });
+      // case Protocol.V1:
+      //   return new V1RouteWithValidQuote({
+      //     amount: CurrencyAmount.fromFractionalAmount(
+      //       route.amount.currency,
+      //       route.amount.numerator,
+      //       route.amount.denominator
+      //     ),
+      //     rawQuote: BigNumber.from(route.rawQuote),
+      //     percent: route.percent,
+      //     route: route.route,
+      //     gasModel: route.gasModel,
+      //     quoteToken: new Token(
+      //       currencyIn.chainId,
+      //       route.quoteToken.address,
+      //       route.quoteToken.decimals,
+      //       route.quoteToken.symbol,
+      //       route.quoteToken.name
+      //     ),
+      //     tradeType: tradeType,
+      //     v2PoolProvider: v2PoolProvider,
+      //   });
+      // case Protocol.MIXED:
+      //   return new MixedRouteWithValidQuote({
+      //     amount: CurrencyAmount.fromFractionalAmount(
+      //       route.amount.currency,
+      //       route.amount.numerator,
+      //       route.amount.denominator
+      //     ),
+      //     rawQuote: BigNumber.from(route.rawQuote),
+      //     sqrtPriceX96AfterList: route.sqrtPriceX96AfterList.map((num) =>
+      //       BigNumber.from(num)
+      //     ),
+      //     initializedTicksCrossedList: [...route.initializedTicksCrossedList],
+      //     quoterGasEstimate: BigNumber.from(route.gasEstimate),
+      //     percent: route.percent,
+      //     route: route.route,
+      //     mixedRouteGasModel: route.gasModel,
+      //     v2PoolProvider,
+      //     quoteToken: new Token(
+      //       currencyIn.chainId,
+      //       route.quoteToken.address,
+      //       route.quoteToken.decimals,
+      //       route.quoteToken.symbol,
+      //       route.quoteToken.name
+      //     ),
+      //     tradeType: tradeType,
+      //     v3PoolProvider: v3PoolProvider,
+      //   });
     }
   });
   const trade = buildTrade<typeof tradeType>(

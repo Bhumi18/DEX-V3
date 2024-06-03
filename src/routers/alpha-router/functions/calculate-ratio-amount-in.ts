@@ -1,4 +1,4 @@
-import { Fraction } from '@pollum-io/sdk-core';
+import { Fraction } from 'sdkcore18';
 
 import { CurrencyAmount } from '../../../util/amounts';
 

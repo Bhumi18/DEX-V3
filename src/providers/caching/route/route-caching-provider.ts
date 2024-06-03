@@ -4,13 +4,13 @@
  * @export
  * @interface IRouteCachingProvider
  */
-import { Protocol } from '@pollum-io/router-sdk';
+import { Protocol } from 'routersdk18';
 import {
   Currency,
   CurrencyAmount,
   Token,
   TradeType,
-} from '@pollum-io/sdk-core';
+} from 'sdkcore18';
 
 import { ChainId } from '../../../util';
 

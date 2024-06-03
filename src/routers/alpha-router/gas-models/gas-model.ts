@@ -1,15 +1,15 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Token } from '@pollum-io/sdk-core';
+import { Token } from 'sdkcore18';
 
 import {
-  DAI_ROLLUX,
-  DAI_ROLLUX_TANENBAUM,
-  USDC_ROLLUX,
-  USDC_ROLLUX_TANENBAUM,
-  USDT_ROLLUX,
-  USDT_ROLLUX_TANENBAUM,
+  DAI_MODE,
+  // DAI_ROLLUX_TANENBAUM,
+  USDC_MODE,
+  // USDC_ROLLUX_TANENBAUM,
+  USDT_MODE,
+  // USDT_ROLLUX_TANENBAUM,
 } from '../../../providers/token-provider';
-import { IV2PoolProvider } from '../../../providers/v2/pool-provider';
+// import { IV2PoolProvider } from '../../../providers/v2/pool-provider';
 import {
   ArbitrumGasData,
   IL2GasDataProvider,
@@ -19,19 +19,19 @@ import { IV3PoolProvider } from '../../../providers/v3/pool-provider';
 import { CurrencyAmount } from '../../../util/amounts';
 import { ChainId } from '../../../util/chains';
 import {
-  MixedRouteWithValidQuote,
+  // MixedRouteWithValidQuote,
   RouteWithValidQuote,
-  V1RouteWithValidQuote,
+  // V1RouteWithValidQuote,
   V3RouteWithValidQuote,
 } from '../entities/route-with-valid-quote';
 
 export const usdGasTokensByChain: { [chainId in ChainId]?: Token[] } = {
-  [ChainId.ROLLUX]: [DAI_ROLLUX, USDC_ROLLUX, USDT_ROLLUX],
-  [ChainId.ROLLUX_TANENBAUM]: [
-    DAI_ROLLUX_TANENBAUM,
-    USDC_ROLLUX_TANENBAUM,
-    USDT_ROLLUX_TANENBAUM,
-  ],
+  [ChainId.MODE]: [DAI_MODE, USDC_MODE, USDT_MODE],
+  // [ChainId.ROLLUX_TANENBAUM]: [
+  //   DAI_ROLLUX_TANENBAUM,
+  //   USDC_ROLLUX_TANENBAUM,
+  //   USDT_ROLLUX_TANENBAUM,
+  // ],
 };
 
 export type L1ToL2GasCosts = {
@@ -46,7 +46,7 @@ export type BuildOnChainGasModelFactoryType = {
   v3poolProvider: IV3PoolProvider;
   amountToken: Token;
   quoteToken: Token;
-  v2poolProvider: IV2PoolProvider;
+  // v2poolProvider: IV2PoolProvider;
   l2GasDataProvider?:
   | IL2GasDataProvider<OptimismGasData>
   | IL2GasDataProvider<ArbitrumGasData>;
@@ -55,7 +55,7 @@ export type BuildOnChainGasModelFactoryType = {
 export type BuildV2GasModelFactoryType = {
   chainId: ChainId;
   gasPriceWei: BigNumber;
-  poolProvider: IV2PoolProvider;
+  // poolProvider: IV2PoolProvider;
   token: Token;
 };
 
@@ -95,14 +95,14 @@ export type IGasModel<TRouteWithValidQuote extends RouteWithValidQuote> = {
  * @abstract
  * @class IV2GasModelFactory
  */
-export abstract class IV2GasModelFactory {
-  public abstract buildGasModel({
-    chainId,
-    gasPriceWei,
-    poolProvider,
-    token,
-  }: BuildV2GasModelFactoryType): Promise<IGasModel<V1RouteWithValidQuote>>;
-}
+// export abstract class IV2GasModelFactory {
+//   public abstract buildGasModel({
+//     chainId,
+//     gasPriceWei,
+//     poolProvider,
+//     token,
+//   }: BuildV2GasModelFactoryType): Promise<IGasModel<V1RouteWithValidQuote>>;
+// }
 
 /**
  * Factory for building gas models that can be used with any route to generate
@@ -122,9 +122,9 @@ export abstract class IOnChainGasModelFactory {
     v3poolProvider,
     amountToken,
     quoteToken,
-    v2poolProvider,
+    // v2poolProvider,
     l2GasDataProvider,
   }: BuildOnChainGasModelFactoryType): Promise<
-    IGasModel<V3RouteWithValidQuote | MixedRouteWithValidQuote>
+    IGasModel<V3RouteWithValidQuote>
   >;
 }

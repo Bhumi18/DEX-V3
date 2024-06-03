@@ -10,21 +10,21 @@ import {
 
 import { ProviderConfig } from './provider';
 import { SimulationStatus, Simulator } from './simulation-provider';
-import { IV2PoolProvider } from './v2/pool-provider';
+// import { IV2PoolProvider } from './v2/pool-provider';
 import { ArbitrumGasData, OptimismGasData } from './v3/gas-data-provider';
 import { IV3PoolProvider } from './v3/pool-provider';
 
 export class EthEstimateGasSimulator extends Simulator {
-  v2PoolProvider: IV2PoolProvider;
+  // v2PoolProvider: IV2PoolProvider;
   v3PoolProvider: IV3PoolProvider;
   constructor(
     chainId: ChainId,
     provider: JsonRpcProvider,
-    v2PoolProvider: IV2PoolProvider,
+    // v2PoolProvider: IV2PoolProvider,
     v3PoolProvider: IV3PoolProvider
   ) {
     super(provider, chainId);
-    this.v2PoolProvider = v2PoolProvider;
+    // this.v2PoolProvider = v2PoolProvider;
     this.v3PoolProvider = v3PoolProvider;
   }
   async ethEstimateGas(
@@ -92,7 +92,7 @@ export class EthEstimateGasSimulator extends Simulator {
       route.quote.currency.chainId,
       route,
       estimatedGasUsed,
-      this.v2PoolProvider,
+      // this.v2PoolProvider,
       this.v3PoolProvider,
       l2GasData
     );
@@ -100,7 +100,7 @@ export class EthEstimateGasSimulator extends Simulator {
     return {
       ...initSwapRouteFromExisting(
         route,
-        this.v2PoolProvider,
+        // this.v2PoolProvider,
         this.v3PoolProvider,
         quoteGasAdjusted,
         estimatedGasUsed,

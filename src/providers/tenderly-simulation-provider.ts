@@ -3,7 +3,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import {
   PERMIT2_ADDRESS,
   UNIVERSAL_ROUTER_ADDRESS,
-} from '@pollum-io/universal-router-sdk';
+} from 'universalroutersdk18';
 import axios from 'axios';
 import { BigNumber } from 'ethers/lib/ethers';
 
@@ -24,7 +24,7 @@ import {
   SimulationStatus,
   Simulator,
 } from './simulation-provider';
-import { IV2PoolProvider } from './v2/pool-provider';
+// import { IV2PoolProvider } from './v2/pool-provider';
 import { ArbitrumGasData, OptimismGasData } from './v3/gas-data-provider';
 import { IV3PoolProvider } from './v3/pool-provider';
 
@@ -129,7 +129,7 @@ export class TenderlySimulator extends Simulator {
   private tenderlyUser: string;
   private tenderlyProject: string;
   private tenderlyAccessKey: string;
-  private v2PoolProvider: IV2PoolProvider;
+  // private v2PoolProvider: IV2PoolProvider;
   private v3PoolProvider: IV3PoolProvider;
   private overrideEstimateMultiplier: { [chainId in ChainId]?: number };
 
@@ -139,7 +139,7 @@ export class TenderlySimulator extends Simulator {
     tenderlyUser: string,
     tenderlyProject: string,
     tenderlyAccessKey: string,
-    v2PoolProvider: IV2PoolProvider,
+    // v2PoolProvider: IV2PoolProvider,
     v3PoolProvider: IV3PoolProvider,
     provider: JsonRpcProvider,
     overrideEstimateMultiplier?: { [chainId in ChainId]?: number }
@@ -149,7 +149,7 @@ export class TenderlySimulator extends Simulator {
     this.tenderlyUser = tenderlyUser;
     this.tenderlyProject = tenderlyProject;
     this.tenderlyAccessKey = tenderlyAccessKey;
-    this.v2PoolProvider = v2PoolProvider;
+    // this.v2PoolProvider = v2PoolProvider;
     this.v3PoolProvider = v3PoolProvider;
     this.overrideEstimateMultiplier = overrideEstimateMultiplier ?? {};
   }
@@ -395,14 +395,14 @@ export class TenderlySimulator extends Simulator {
       chainId,
       swapRoute,
       estimatedGasUsed,
-      this.v2PoolProvider,
+      // this.v2PoolProvider,
       this.v3PoolProvider,
       l2GasData
     );
     return {
       ...initSwapRouteFromExisting(
         swapRoute,
-        this.v2PoolProvider,
+        // this.v2PoolProvider,
         this.v3PoolProvider,
         quoteGasAdjusted,
         estimatedGasUsed,

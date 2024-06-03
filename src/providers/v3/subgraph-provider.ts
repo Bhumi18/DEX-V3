@@ -1,4 +1,4 @@
-import { Token } from '@pollum-io/sdk-core';
+import { Token } from 'sdkcore18';
 import retry from 'async-retry';
 import Timeout from 'await-timeout';
 import { gql, GraphQLClient } from 'graphql-request';
@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import { ChainId, log } from '../../util';
 import { ProviderConfig } from '../provider';
-import { V2SubgraphPool } from '../v2/subgraph-provider';
+// import { V2SubgraphPool } from '../v2/subgraph-provider';
 
 export interface V3SubgraphPool {
   id: string;
@@ -41,12 +41,12 @@ type RawV3SubgraphPool = {
 export const printV3SubgraphPool = (s: V3SubgraphPool) =>
   `${s.token0.id}/${s.token1.id}/${s.feeTier}`;
 
-export const printV2SubgraphPool = (s: V2SubgraphPool) =>
-  `${s.token0.id}/${s.token1.id}`;
+// export const printV2SubgraphPool = (s: V2SubgraphPool) =>
+//   `${s.token0.id}/${s.token1.id}`;
 
 const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainId]?: string } = {
-  [ChainId.ROLLUX]:
-    'https://rollux.graph.pegasys.fi/subgraphs/name/pollum-io/pegasys-v3',
+  [ChainId.MODE]:
+    'https://api.goldsky.com/api/public/project_clvqb3g2poub601xzgkzc9oxs/subgraphs/udonswap-v3/1/gn',
 };
 
 const PAGE_SIZE = 1000; // 1k is max possible query size from subgraph.

@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Percent, Price, TradeType } from '@pollum-io/sdk-core';
-import { Pool } from '@pollum-io/v3-sdk';
+import { Percent, Price, TradeType } from 'sdkcore18';
+import { Pool } from 'v3sdk18';
 import _ from 'lodash';
 
 import {
@@ -95,7 +95,7 @@ export class V3HeuristicGasModelFactory extends IOnChainGasModelFactory {
       };
       let l1Used = BigNumber.from(0);
       let l1FeeInWei = BigNumber.from(0);
-      if (chainId == ChainId.ROLLUX || chainId == ChainId.ROLLUX_TANENBAUM) {
+      if (chainId == ChainId.MODE) {
         [l1Used, l1FeeInWei] = this.calculateOptimismToL1SecurityFee(
           route,
           swapOptions,
@@ -424,7 +424,7 @@ export class V3HeuristicGasModelFactory extends IOnChainGasModelFactory {
     const data = buildSwapMethodParameters(
       trade,
       swapConfig,
-      ChainId.ROLLUX
+      ChainId.MODE
     ).calldata;
     const l1GasUsed = getL2ToL1GasUsed(data, overhead);
     // l1BaseFee is L1 Gas Price on etherscan

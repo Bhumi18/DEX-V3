@@ -33,8 +33,7 @@ export type OptimismGasData = {
 };
 
 export class OptimismGasDataProvider
-  implements IL2GasDataProvider<OptimismGasData>
-{
+  implements IL2GasDataProvider<OptimismGasData> {
   protected gasOracleAddress: string;
 
   constructor(
@@ -42,7 +41,7 @@ export class OptimismGasDataProvider
     protected multicall2Provider: IMulticallProvider,
     gasPriceAddress?: string
   ) {
-    if (chainId != ChainId.ROLLUX && chainId != ChainId.ROLLUX_TANENBAUM) {
+    if (chainId != ChainId.MODE) {
       throw new Error('This data provider is used only on optimism networks.');
     }
     this.gasOracleAddress = gasPriceAddress ?? OVM_GASPRICE_ADDRESS;
@@ -106,8 +105,7 @@ export type ArbitrumGasData = {
 };
 
 export class ArbitrumGasDataProvider
-  implements IL2GasDataProvider<ArbitrumGasData>
-{
+  implements IL2GasDataProvider<ArbitrumGasData> {
   protected gasFeesAddress: string;
   protected blockNumberOverride: number | Promise<number> | undefined;
   constructor(

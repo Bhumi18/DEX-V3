@@ -2,8 +2,8 @@ import { parseUnits } from '@ethersproject/units';
 import {
   Currency,
   CurrencyAmount as CurrencyAmountRaw,
-} from '@pollum-io/sdk-core';
-import { FeeAmount } from '@pollum-io/v3-sdk';
+} from 'sdkcore18';
+import { FeeAmount } from 'v3sdk18';
 import JSBI from 'jsbi';
 
 export class CurrencyAmount extends CurrencyAmountRaw<Currency> { }

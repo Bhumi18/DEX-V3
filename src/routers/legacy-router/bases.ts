@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Token } from '@pollum-io/sdk-core';
+import { Token } from 'sdkcore18';
 
 import {
-  DAI_ROLLUX,
-  DAI_ROLLUX_TANENBAUM,
+  DAI_MODE,
+  // DAI_ROLLUX_TANENBAUM,
   ITokenProvider,
-  USDC_ROLLUX,
-  USDC_ROLLUX_TANENBAUM,
-  USDT_ROLLUX,
-  USDT_ROLLUX_TANENBAUM,
+  USDC_MODE,
+  // USDC_ROLLUX_TANENBAUM,
+  USDT_MODE,
+  // USDT_ROLLUX_TANENBAUM,
 } from '../../providers/token-provider';
 import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 
@@ -20,18 +20,18 @@ export const BASES_TO_CHECK_TRADES_AGAINST = (
   _tokenProvider: ITokenProvider
 ): ChainTokenList => {
   return {
-    [ChainId.ROLLUX]: [
-      WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX]!,
-      DAI_ROLLUX,
-      USDC_ROLLUX,
-      USDT_ROLLUX,
+    [ChainId.MODE]: [
+      WRAPPED_NATIVE_CURRENCY[ChainId.MODE]!,
+      DAI_MODE,
+      USDC_MODE,
+      USDT_MODE,
     ],
-    [ChainId.ROLLUX_TANENBAUM]: [
-      WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TANENBAUM]!,
-      USDC_ROLLUX_TANENBAUM,
-      USDT_ROLLUX_TANENBAUM,
-      DAI_ROLLUX_TANENBAUM,
-    ],
+    // [ChainId.ROLLUX_TANENBAUM]: [
+    //   WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TANENBAUM]!,
+    //   USDC_ROLLUX_TANENBAUM,
+    //   USDT_ROLLUX_TANENBAUM,
+    //   DAI_ROLLUX_TANENBAUM,
+    // ],
   };
 };
 

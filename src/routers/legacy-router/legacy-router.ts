@@ -1,16 +1,16 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Logger } from '@ethersproject/logger';
-import { SwapRouter, Trade } from '@pollum-io/router-sdk';
-import { Currency, Token, TradeType } from '@pollum-io/sdk-core';
-import { FeeAmount, MethodParameters, Pool, Route } from '@pollum-io/v3-sdk';
+import { SwapRouter, Trade } from 'routersdk18';
+import { Currency, Token, TradeType } from 'sdkcore18';
+import { FeeAmount, MethodParameters, Pool, Route } from 'v3sdk18';
 import _ from 'lodash';
 
 import { IOnChainQuoteProvider, RouteWithQuotes } from '../../providers';
 import { IMulticallProvider } from '../../providers/multicall-provider';
 import {
-  DAI_ROLLUX,
+  DAI_MODE,
   ITokenProvider,
-  USDC_ROLLUX,
+  USDC_MODE,
 } from '../../providers/token-provider';
 import { IV3PoolProvider } from '../../providers/v3/pool-provider';
 import { SWAP_ROUTER_02_ADDRESSES } from '../../util';
@@ -132,7 +132,7 @@ export class LegacyRouter {
         1
       ),
       estimatedGasUsedUSD: CurrencyAmount.fromFractionalAmount(
-        DAI_ROLLUX!,
+        DAI_MODE!,
         0,
         1
       ),
@@ -187,7 +187,7 @@ export class LegacyRouter {
         1
       ),
       estimatedGasUsedUSD: CurrencyAmount.fromFractionalAmount(
-        DAI_ROLLUX,
+        DAI_MODE,
         0,
         1
       ),
@@ -309,7 +309,7 @@ export class LegacyRouter {
         gasModel: {
           estimateGasCost: () => ({
             gasCostInToken: CurrencyAmount.fromRawAmount(quoteToken, 0),
-            gasCostInUSD: CurrencyAmount.fromRawAmount(USDC_ROLLUX, 0),
+            gasCostInUSD: CurrencyAmount.fromRawAmount(USDC_MODE, 0),
             gasEstimate: BigNumber.from(0),
           }),
         },
@@ -498,14 +498,14 @@ export class LegacyRouter {
       );
 
       return new Trade({
-        v3Routes: [
+        v2Routes: [
           {
-            routev3: routeCurrency,
+            routev2: routeCurrency,
             inputAmount: amountCurrency,
             outputAmount: quoteCurrency,
           },
         ],
-        v1Routes: [],
+        // v1Routes: [],
         tradeType: tradeType,
       });
     } else {
@@ -528,14 +528,14 @@ export class LegacyRouter {
       );
 
       return new Trade({
-        v3Routes: [
+        v2Routes: [
           {
-            routev3: routeCurrency,
+            routev2: routeCurrency,
             inputAmount: quoteCurrency,
             outputAmount: amountCurrency,
           },
         ],
-        v1Routes: [],
+        // v1Routes: [],
         tradeType: tradeType,
       });
     }

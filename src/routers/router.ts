@@ -1,25 +1,25 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import {
   CondensedAddLiquidityOptions,
-  MixedRouteSDK,
+  // MixedRouteSDK,
   Protocol,
   Trade,
-} from '@pollum-io/router-sdk';
+} from 'routersdk18';
 import {
   Currency,
   Fraction,
   Percent,
   Token,
   TradeType,
-} from '@pollum-io/sdk-core';
-import { SwapOptions as UniversalRouterSwapOptions } from '@pollum-io/universal-router-sdk';
-import { Route as V1RouteRaw } from '@pollum-io/v1-sdk';
+} from 'sdkcore18';
+import { SwapOptions as UniversalRouterSwapOptions } from 'universalroutersdk18';
+// import { Route as V1RouteRaw } from '@pollum-io/v1-sdk';
 import {
   Pool,
   Position,
   MethodParameters as SDKMethodParameters,
   Route as V3RouteRaw,
-} from '@pollum-io/v3-sdk';
+} from 'v3sdk18';
 
 import { SimulationStatus } from '../providers';
 import { CurrencyAmount } from '../util/amounts';
@@ -29,12 +29,12 @@ import { RouteWithValidQuote } from './alpha-router';
 export class V3Route extends V3RouteRaw<Token, Token> {
   protocol: Protocol.V3 = Protocol.V3;
 }
-export class V1Route extends V1RouteRaw<Token, Token> {
-  protocol: Protocol.V1 = Protocol.V1;
-}
-export class MixedRoute extends MixedRouteSDK<Token, Token> {
-  protocol: Protocol.MIXED = Protocol.MIXED;
-}
+// export class V1Route extends V1RouteRaw<Token, Token> {
+//   protocol: Protocol.V1 = Protocol.V1;
+// }
+// export class MixedRoute extends MixedRouteSDK<Token, Token> {
+//   protocol: Protocol.MIXED = Protocol.MIXED;
+// }
 
 export type SwapRoute = {
   /**

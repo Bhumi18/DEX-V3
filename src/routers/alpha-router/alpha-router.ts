@@ -1,10 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { BaseProvider, JsonRpcProvider } from '@ethersproject/providers';
-import DEFAULT_TOKEN_LIST from '@pollum-io/default-token-list';
-import { Protocol, SwapRouter, Trade } from '@pollum-io/router-sdk';
-import { Currency, Fraction, Token, TradeType } from '@pollum-io/sdk-core';
-import { Pool, Position, SqrtPriceMath, TickMath } from '@pollum-io/v3-sdk';
-import { TokenList } from '@uniswap/token-lists';
+import DEFAULT_TOKEN_LIST from 'udonswap-default-token-list';
+import { Protocol, SwapRouter, Trade } from 'routersdk18';
+import { Currency, Fraction, Token, TradeType } from 'sdkcore18';
+import { Pool, Position, SqrtPriceMath, TickMath } from 'v3sdk18';
+import { TokenList } from 'udonswap-token-lists';
 import retry from 'async-retry';
 import JSBI from 'jsbi';
 import _ from 'lodash';
@@ -15,8 +15,8 @@ import {
   CacheMode,
   CachingGasStationProvider,
   CachingTokenProviderWithFallback,
-  CachingV2PoolProvider,
-  CachingV2SubgraphProvider,
+  // CachingV2PoolProvider,
+  // CachingV2SubgraphProvider,
   CachingV3PoolProvider,
   CachingV3SubgraphProvider,
   EIP1559GasPriceProvider,
@@ -24,20 +24,20 @@ import {
   IOnChainQuoteProvider,
   IRouteCachingProvider,
   ISwapRouterProvider,
-  IV2QuoteProvider,
-  IV2SubgraphProvider,
+  // IV2QuoteProvider,
+  // IV2SubgraphProvider,
   LegacyGasPriceProvider,
   NodeJSCache,
   OnChainGasPriceProvider,
   OnChainQuoteProvider,
   Simulator,
-  StaticV2SubgraphProvider,
+  // StaticV2SubgraphProvider,
   StaticV3SubgraphProvider,
   SwapRouterProvider,
   UniswapMulticallProvider,
   URISubgraphProvider,
-  V2QuoteProvider,
-  V2SubgraphProviderWithFallBacks,
+  // V2QuoteProvider,
+  // V2SubgraphProviderWithFallBacks,
   V3SubgraphProviderWithFallBacks,
 } from '../../providers';
 import {
@@ -53,10 +53,10 @@ import {
   ITokenValidatorProvider,
   TokenValidatorProvider,
 } from '../../providers/token-validator-provider';
-import {
-  IV2PoolProvider,
-  V2PoolProvider,
-} from '../../providers/v2/pool-provider';
+// import {
+//   IV2PoolProvider,
+//   V2PoolProvider,
+// } from '../../providers/v2/pool-provider';
 import {
   ArbitrumGasData,
   // ArbitrumGasDataProvider,
@@ -75,8 +75,8 @@ import { CurrencyAmount } from '../../util/amounts';
 import {
   ChainId,
   ID_TO_CHAIN_ID,
-  ID_TO_NETWORK_NAME,
-  V2_SUPPORTED,
+  // ID_TO_NETWORK_NAME,
+  // V2_SUPPORTED,
 } from '../../util/chains';
 import { log } from '../../util/log';
 import {
@@ -89,7 +89,7 @@ import {
   IRouter,
   ISwapToRatio,
   MethodParameters,
-  MixedRoute,
+  // MixedRoute,
   SwapAndAddConfig,
   SwapAndAddOptions,
   SwapAndAddParameters,
@@ -105,7 +105,7 @@ import {
   ETH_GAS_STATION_API_URL,
 } from './config';
 import {
-  MixedRouteWithValidQuote,
+  // MixedRouteWithValidQuote,
   RouteWithValidQuote,
   V3RouteWithValidQuote,
 } from './entities/route-with-valid-quote';
@@ -118,12 +118,12 @@ import {
 import {
   IGasModel,
   IOnChainGasModelFactory,
-  IV2GasModelFactory,
+  // IV2GasModelFactory,
 } from './gas-models/gas-model';
-import { MixedRouteHeuristicGasModelFactory } from './gas-models/mixedRoute/mixed-route-heuristic-gas-model';
-import { V2HeuristicGasModelFactory } from './gas-models/v2/v2-heuristic-gas-model';
+// import { MixedRouteHeuristicGasModelFactory } from './gas-models/mixedRoute/mixed-route-heuristic-gas-model';
+// import { V2HeuristicGasModelFactory } from './gas-models/v2/v2-heuristic-gas-model';
 import { V3HeuristicGasModelFactory } from './gas-models/v3/v3-heuristic-gas-model';
-import { GetQuotesResult, MixedQuoter, V2Quoter, V3Quoter } from './quoters';
+import { GetQuotesResult, V3Quoter } from './quoters';
 
 export type AlphaRouterParams = {
   /**
@@ -156,15 +156,15 @@ export type AlphaRouterParams = {
    * The provider for getting all pools that exist on V2 from the Subgraph. The pools
    * from this provider are filtered during the algorithm to a set of candidate pools.
    */
-  v2SubgraphProvider?: IV2SubgraphProvider;
+  // v2SubgraphProvider?: IV2SubgraphProvider;
   /**
    * The provider for getting data about V2 pools.
    */
-  v2PoolProvider?: IV2PoolProvider;
+  // v2PoolProvider?: IV2PoolProvider;
   /**
    * The provider for getting V3 quotes.
    */
-  v2QuoteProvider?: IV2QuoteProvider;
+  // v2QuoteProvider?: IV2QuoteProvider;
   /**
    * The provider for getting data about Tokens.
    */
@@ -183,7 +183,7 @@ export type AlphaRouterParams = {
    * A factory for generating a gas model that is used when estimating the gas used by
    * V2 routes.
    */
-  v2GasModelFactory?: IV2GasModelFactory;
+  // v2GasModelFactory?: IV2GasModelFactory;
   /**
    * A factory for generating a gas model that is used when estimating the gas used by
    * V3 routes.
@@ -351,24 +351,24 @@ export class AlphaRouter
   protected v3SubgraphProvider: IV3SubgraphProvider;
   protected v3PoolProvider: IV3PoolProvider;
   protected onChainQuoteProvider: IOnChainQuoteProvider;
-  protected v2SubgraphProvider: IV2SubgraphProvider;
-  protected v2QuoteProvider: IV2QuoteProvider;
-  protected v2PoolProvider: IV2PoolProvider;
+  // protected v2SubgraphProvider: IV2SubgraphProvider;
+  // protected v2QuoteProvider: IV2QuoteProvider;
+  // protected v2PoolProvider: IV2PoolProvider;
   protected tokenProvider: ITokenProvider;
   protected gasPriceProvider: IGasPriceProvider;
   protected swapRouterProvider: ISwapRouterProvider;
   protected v3GasModelFactory: IOnChainGasModelFactory;
-  protected v2GasModelFactory: IV2GasModelFactory;
-  protected mixedRouteGasModelFactory: IOnChainGasModelFactory;
+  // protected v2GasModelFactory: IV2GasModelFactory;
+  // protected mixedRouteGasModelFactory: IOnChainGasModelFactory;
   protected tokenValidatorProvider?: ITokenValidatorProvider;
   protected blockedTokenListProvider?: ITokenListProvider;
   protected l2GasDataProvider?:
     | IL2GasDataProvider<OptimismGasData>
     | IL2GasDataProvider<ArbitrumGasData>;
   protected simulator?: Simulator;
-  protected v2Quoter: V2Quoter;
+  // protected v2Quoter: V2Quoter;
   protected v3Quoter: V3Quoter;
-  protected mixedQuoter: MixedQuoter;
+  // protected mixedQuoter: MixedQuoter;
   protected routeCachingProvider?: IRouteCachingProvider;
 
   constructor({
@@ -377,16 +377,16 @@ export class AlphaRouter
     multicall2Provider,
     v3PoolProvider,
     onChainQuoteProvider,
-    v2PoolProvider,
-    v2QuoteProvider,
-    v2SubgraphProvider,
+    // v2PoolProvider,
+    // v2QuoteProvider,
+    // v2SubgraphProvider,
     tokenProvider,
     blockedTokenListProvider,
     v3SubgraphProvider,
     gasPriceProvider,
     v3GasModelFactory,
-    v2GasModelFactory,
-    mixedRouteGasModelFactory,
+    // v2GasModelFactory,
+    // mixedRouteGasModelFactory,
     swapRouterProvider,
     // optimismGasDataProvider,
     tokenValidatorProvider,
@@ -413,8 +413,8 @@ export class AlphaRouter
       this.onChainQuoteProvider = onChainQuoteProvider;
     } else {
       switch (chainId) {
-        case ChainId.ROLLUX:
-        case ChainId.ROLLUX_TANENBAUM:
+        case ChainId.MODE:
+          // case ChainId.ROLLUX_TANENBAUM:
           this.onChainQuoteProvider = new OnChainQuoteProvider(
             chainId,
             provider,
@@ -471,15 +471,15 @@ export class AlphaRouter
       }
     }
 
-    this.v2PoolProvider =
-      v2PoolProvider ??
-      new CachingV2PoolProvider(
-        chainId,
-        new V2PoolProvider(chainId, this.multicall2Provider),
-        new NodeJSCache(new NodeCache({ stdTTL: 60, useClones: false }))
-      );
+    // this.v2PoolProvider =
+    //   v2PoolProvider ??
+    //   new CachingV2PoolProvider(
+    //     chainId,
+    //     new V2PoolProvider(chainId, this.multicall2Provider),
+    //     new NodeJSCache(new NodeCache({ stdTTL: 60, useClones: false }))
+    //   );
 
-    this.v2QuoteProvider = v2QuoteProvider ?? new V2QuoteProvider();
+    // this.v2QuoteProvider = v2QuoteProvider ?? new V2QuoteProvider();
 
     this.blockedTokenListProvider =
       blockedTokenListProvider ??
@@ -501,26 +501,26 @@ export class AlphaRouter
         new TokenProvider(chainId, this.multicall2Provider)
       );
 
-    const chainName = ID_TO_NETWORK_NAME(chainId);
+    // const chainName = ID_TO_NETWORK_NAME(chainId);
 
     // ipfs urls in the following format: `https://cloudflare-ipfs.com/ipns/api.uniswap.org/v1/pools/${protocol}/${chainName}.json`;
-    if (v2SubgraphProvider) {
-      this.v2SubgraphProvider = v2SubgraphProvider;
-    } else {
-      this.v2SubgraphProvider = new V2SubgraphProviderWithFallBacks([
-        new CachingV2SubgraphProvider(
-          chainId,
-          new URISubgraphProvider(
-            chainId,
-            `https://cloudflare-ipfs.com/ipns/api.pegasys.fi/pools/v1/${chainName}.json`,
-            undefined,
-            0
-          ),
-          new NodeJSCache(new NodeCache({ stdTTL: 300, useClones: false }))
-        ),
-        new StaticV2SubgraphProvider(chainId),
-      ]);
-    }
+    // if (v2SubgraphProvider) {
+    //   this.v2SubgraphProvider = v2SubgraphProvider;
+    // } else {
+    //   this.v2SubgraphProvider = new V2SubgraphProviderWithFallBacks([
+    //     new CachingV2SubgraphProvider(
+    //       chainId,
+    //       new URISubgraphProvider(
+    //         chainId,
+    //         `https://cloudflare-ipfs.com/ipns/api.pegasys.fi/pools/v1/${chainName}.json`,
+    //         undefined,
+    //         0
+    //       ),
+    //       new NodeJSCache(new NodeCache({ stdTTL: 300, useClones: false }))
+    //     ),
+    //     new StaticV2SubgraphProvider(chainId),
+    //   ]);
+    // }
 
     if (v3SubgraphProvider) {
       this.v3SubgraphProvider = v3SubgraphProvider;
@@ -530,7 +530,7 @@ export class AlphaRouter
           chainId,
           new URISubgraphProvider(
             chainId,
-            `https://cloudflare-ipfs.com/ipns/api.pegasys.fi/pools/v3/${chainName}.json`,
+            'https://api.goldsky.com/api/public/project_clvqb3g2poub601xzgkzc9oxs/subgraphs/udonswap-v3/1/gn',
             undefined,
             0
           ),
@@ -564,10 +564,10 @@ export class AlphaRouter
       );
     this.v3GasModelFactory =
       v3GasModelFactory ?? new V3HeuristicGasModelFactory();
-    this.v2GasModelFactory =
-      v2GasModelFactory ?? new V2HeuristicGasModelFactory();
-    this.mixedRouteGasModelFactory =
-      mixedRouteGasModelFactory ?? new MixedRouteHeuristicGasModelFactory();
+    // this.v2GasModelFactory =
+    //   v2GasModelFactory ?? new V2HeuristicGasModelFactory();
+    // this.mixedRouteGasModelFactory =
+    //   mixedRouteGasModelFactory ?? new MixedRouteHeuristicGasModelFactory();
 
     this.swapRouterProvider =
       swapRouterProvider ??
@@ -589,7 +589,7 @@ export class AlphaRouter
     // }
     if (tokenValidatorProvider) {
       this.tokenValidatorProvider = tokenValidatorProvider;
-    } else if (this.chainId === ChainId.ROLLUX) {
+    } else if (this.chainId === ChainId.MODE) {
       this.tokenValidatorProvider = new TokenValidatorProvider(
         this.chainId,
         this.multicall2Provider,
@@ -599,16 +599,16 @@ export class AlphaRouter
 
     // Initialize the Quoters.
     // Quoters are an abstraction encapsulating the business logic of fetching routes and quotes.
-    this.v2Quoter = new V2Quoter(
-      this.v2SubgraphProvider,
-      this.v2PoolProvider,
-      this.v2QuoteProvider,
-      this.v2GasModelFactory,
-      this.tokenProvider,
-      this.chainId,
-      this.blockedTokenListProvider,
-      this.tokenValidatorProvider
-    );
+    // this.v2Quoter = new V2Quoter(
+    //   this.v2SubgraphProvider,
+    //   this.v2PoolProvider,
+    //   this.v2QuoteProvider,
+    //   // this.v2GasModelFactory,
+    //   this.tokenProvider,
+    //   this.chainId,
+    //   this.blockedTokenListProvider,
+    //   this.tokenValidatorProvider
+    // );
 
     this.v3Quoter = new V3Quoter(
       this.v3SubgraphProvider,
@@ -620,17 +620,17 @@ export class AlphaRouter
       this.tokenValidatorProvider
     );
 
-    this.mixedQuoter = new MixedQuoter(
-      this.v3SubgraphProvider,
-      this.v3PoolProvider,
-      this.v2SubgraphProvider,
-      this.v2PoolProvider,
-      this.onChainQuoteProvider,
-      this.tokenProvider,
-      this.chainId,
-      this.blockedTokenListProvider,
-      this.tokenValidatorProvider
-    );
+    // this.mixedQuoter = new MixedQuoter(
+    //   this.v3SubgraphProvider,
+    //   this.v3PoolProvider,
+    //   this.v2SubgraphProvider,
+    //   this.v2PoolProvider,
+    //   this.onChainQuoteProvider,
+    //   this.tokenProvider,
+    //   this.chainId,
+    //   this.blockedTokenListProvider,
+    //   this.tokenValidatorProvider
+    // );
   }
 
   public async routeToRatio(
@@ -713,7 +713,7 @@ export class AlphaRouter
           ...routingConfig,
           /// @dev We do not want to query for mixedRoutes for routeToRatio as they are not supported
           /// [Protocol.V3, Protocol.V1] will make sure we only query for V3 and V2
-          protocols: [Protocol.V3, Protocol.V1],
+          protocols: [Protocol.V3],
         }
       );
       if (!swap) {
@@ -872,7 +872,7 @@ export class AlphaRouter
 
     const quoteToken = quoteCurrency.wrapped;
 
-    const [v3GasModel, mixedRouteGasModel] = await this.getGasModels(
+    const [v3GasModel] = await this.getGasModels(
       gasPriceWei,
       amount.currency.wrapped,
       quoteToken
@@ -964,8 +964,8 @@ export class AlphaRouter
         tradeType,
         routingConfig,
         v3GasModel,
-        mixedRouteGasModel,
-        gasPriceWei
+        // mixedRouteGasModel,
+        // gasPriceWei
       );
     }
 
@@ -981,8 +981,8 @@ export class AlphaRouter
         tradeType,
         routingConfig,
         v3GasModel,
-        mixedRouteGasModel,
-        gasPriceWei
+        // mixedRouteGasModel,
+        // gasPriceWei
       );
     }
 
@@ -1216,8 +1216,8 @@ export class AlphaRouter
     tradeType: TradeType,
     routingConfig: AlphaRouterConfig,
     v3GasModel: IGasModel<V3RouteWithValidQuote>,
-    mixedRouteGasModel: IGasModel<MixedRouteWithValidQuote>,
-    gasPriceWei: BigNumber
+    // mixedRouteGasModel: IGasModel<MixedRouteWithValidQuote>,
+    // gasPriceWei: BigNumber
   ): Promise<BestSwapRoute | null> {
     log.info(
       {
@@ -1233,12 +1233,12 @@ export class AlphaRouter
     const v3Routes = cachedRoutes.routes.filter(
       (route) => route.protocol === Protocol.V3
     );
-    const v1Routes = cachedRoutes.routes.filter(
-      (route) => route.protocol === Protocol.V1
-    );
-    const mixedRoutes = cachedRoutes.routes.filter(
-      (route) => route.protocol === Protocol.MIXED
-    );
+    // const v1Routes = cachedRoutes.routes.filter(
+    //   (route) => route.protocol === Protocol.V1
+    // );
+    // const mixedRoutes = cachedRoutes.routes.filter(
+    //   (route) => route.protocol === Protocol.MIXED
+    // );
 
     // Calculate percents from all routes, we will fetch quotes for each percent in case we had stale data when the route was cached
     const percentsSet: Set<number> = new Set(
@@ -1273,42 +1273,42 @@ export class AlphaRouter
       );
     }
 
-    if (v1Routes.length > 0) {
-      quotePromises.push(
-        // When we fetch the quotes in V2, we are not calling the `onChainProvider` like on v3Routes and mixedRoutes
-        // Instead we are using the reserves in the Pool object, so we need to re-load the current reserves.
-        this.v2Quoter.getRoutesThenQuotes(
-          v1Routes[0]!.tokenIn,
-          v1Routes[0]!.tokenOut,
-          amounts,
-          percents,
-          quoteToken,
-          tradeType,
-          routingConfig,
-          undefined,
-          gasPriceWei
-        )
-      );
-    }
+    // if (v1Routes.length > 0) {
+    //   quotePromises.push(
+    //     // When we fetch the quotes in V2, we are not calling the `onChainProvider` like on v3Routes and mixedRoutes
+    //     // Instead we are using the reserves in the Pool object, so we need to re-load the current reserves.
+    //     this.v2Quoter.getRoutesThenQuotes(
+    //       v1Routes[0]!.tokenIn,
+    //       v1Routes[0]!.tokenOut,
+    //       amounts,
+    //       percents,
+    //       quoteToken,
+    //       tradeType,
+    //       routingConfig,
+    //       undefined,
+    //       gasPriceWei
+    //     )
+    //   );
+    // }
 
-    if (mixedRoutes.length > 0) {
-      const mixedRoutesFromCache: MixedRoute[] = mixedRoutes.map(
-        (cachedRoute) => cachedRoute.route as MixedRoute
-      );
+    // if (mixedRoutes.length > 0) {
+    //   const mixedRoutesFromCache: MixedRoute[] = mixedRoutes.map(
+    //     (cachedRoute) => cachedRoute.route as MixedRoute
+    //   );
 
-      quotePromises.push(
-        this.mixedQuoter.getQuotes(
-          mixedRoutesFromCache,
-          amounts,
-          percents,
-          quoteToken,
-          tradeType,
-          routingConfig,
-          undefined,
-          mixedRouteGasModel
-        )
-      );
-    }
+    //   quotePromises.push(
+    //     this.mixedQuoter.getQuotes(
+    //       mixedRoutesFromCache,
+    //       amounts,
+    //       percents,
+    //       quoteToken,
+    //       tradeType,
+    //       routingConfig,
+    //       undefined,
+    //       mixedRouteGasModel
+    //     )
+    //   );
+    // }
 
     const getQuotesResults = await Promise.all(quotePromises);
     const allRoutesWithValidQuotes = _.flatMap(
@@ -1336,8 +1336,8 @@ export class AlphaRouter
     tradeType: TradeType,
     routingConfig: AlphaRouterConfig,
     v3GasModel: IGasModel<V3RouteWithValidQuote>,
-    mixedRouteGasModel: IGasModel<MixedRouteWithValidQuote>,
-    gasPriceWei: BigNumber
+    // mixedRouteGasModel: IGasModel<MixedRouteWithValidQuote>,
+    // gasPriceWei: BigNumber
   ): Promise<BestSwapRoute | null> {
     // Generate our distribution of amounts, i.e. fractions of the input amount.
     // We will get quotes for fractions of the input amount for different routes, then
@@ -1349,14 +1349,14 @@ export class AlphaRouter
 
     const noProtocolsSpecified = protocols.length === 0;
     const v3ProtocolSpecified = protocols.includes(Protocol.V3);
-    const v2ProtocolSpecified = protocols.includes(Protocol.V1);
-    const v2SupportedInChain = V2_SUPPORTED.includes(this.chainId);
-    const shouldQueryMixedProtocol =
-      protocols.includes(Protocol.MIXED) ||
-      (noProtocolsSpecified && v2SupportedInChain);
-    const mixedProtocolAllowed =
-      [ChainId.ROLLUX, ChainId.ROLLUX_TANENBAUM].includes(this.chainId) &&
-      tradeType === TradeType.EXACT_INPUT;
+    // const v2ProtocolSpecified = protocols.includes(Protocol.V1);
+    // const v2SupportedInChain = V2_SUPPORTED.includes(this.chainId);
+    // const shouldQueryMixedProtocol =
+    //   protocols.includes(Protocol.MIXED) ||
+    //   (noProtocolsSpecified && v2SupportedInChain);
+    // const mixedProtocolAllowed =
+    //   [ChainId.ROLLUX, ChainId.ROLLUX_TANENBAUM].includes(this.chainId) &&
+    //   tradeType === TradeType.EXACT_INPUT;
 
     const quotePromises: Promise<GetQuotesResult>[] = [];
 
@@ -1378,41 +1378,41 @@ export class AlphaRouter
     }
 
     // Maybe Quote V2 - if V2 is specified, or no protocol is specified AND v2 is supported in this chain
-    if (v2SupportedInChain && (v2ProtocolSpecified || noProtocolsSpecified)) {
-      log.info({ protocols, tradeType }, 'Routing across V2');
-      quotePromises.push(
-        this.v2Quoter.getRoutesThenQuotes(
-          tokenIn,
-          tokenOut,
-          amounts,
-          percents,
-          quoteToken,
-          tradeType,
-          routingConfig,
-          undefined,
-          gasPriceWei
-        )
-      );
-    }
+    // if (v2SupportedInChain && (v2ProtocolSpecified || noProtocolsSpecified)) {
+    //   log.info({ protocols, tradeType }, 'Routing across V2');
+    //   quotePromises.push(
+    //     this.v2Quoter.getRoutesThenQuotes(
+    //       tokenIn,
+    //       tokenOut,
+    //       amounts,
+    //       percents,
+    //       quoteToken,
+    //       tradeType,
+    //       routingConfig,
+    //       undefined,
+    //       gasPriceWei
+    //     )
+    //   );
+    // }
 
     // Maybe Quote mixed routes
     // if MixedProtocol is specified or no protocol is specified and v2 is supported AND tradeType is ExactIn
     // AND is Mainnet or Gorli
-    if (shouldQueryMixedProtocol && mixedProtocolAllowed) {
-      log.info({ protocols, tradeType }, 'Routing across MixedRoutes');
-      quotePromises.push(
-        this.mixedQuoter.getRoutesThenQuotes(
-          tokenIn,
-          tokenOut,
-          amounts,
-          percents,
-          quoteToken,
-          tradeType,
-          routingConfig,
-          mixedRouteGasModel
-        )
-      );
-    }
+    // if (shouldQueryMixedProtocol && mixedProtocolAllowed) {
+    //   log.info({ protocols, tradeType }, 'Routing across MixedRoutes');
+    //   quotePromises.push(
+    //     this.mixedQuoter.getRoutesThenQuotes(
+    //       tokenIn,
+    //       tokenOut,
+    //       amounts,
+    //       percents,
+    //       quoteToken,
+    //       tradeType,
+    //       routingConfig,
+    //       mixedRouteGasModel
+    //     )
+    //   );
+    // }
 
     const getQuotesResults = await Promise.all(quotePromises);
 
@@ -1501,7 +1501,7 @@ export class AlphaRouter
     amountToken: Token,
     quoteToken: Token
   ): Promise<
-    [IGasModel<V3RouteWithValidQuote>, IGasModel<MixedRouteWithValidQuote>]
+    [IGasModel<V3RouteWithValidQuote>]
   > {
     const beforeGasModel = Date.now();
 
@@ -1511,24 +1511,22 @@ export class AlphaRouter
       v3poolProvider: this.v3PoolProvider,
       amountToken,
       quoteToken,
-      v2poolProvider: this.v2PoolProvider,
+      // v2poolProvider: this.v2PoolProvider,
       l2GasDataProvider: this.l2GasDataProvider,
     });
 
-    const mixedRouteGasModelPromise =
-      this.mixedRouteGasModelFactory.buildGasModel({
-        chainId: this.chainId,
-        gasPriceWei,
-        v3poolProvider: this.v3PoolProvider,
-        amountToken,
-        quoteToken,
-        v2poolProvider: this.v2PoolProvider,
-      });
+    // const mixedRouteGasModelPromise =
+    //   this.mixedRouteGasModelFactory.buildGasModel({
+    //     chainId: this.chainId,
+    //     gasPriceWei,
+    //     v3poolProvider: this.v3PoolProvider,
+    //     amountToken,
+    //     quoteToken,
+    //     v2poolProvider: this.v2PoolProvider,
+    //   });
 
-    const [v3GasModel, mixedRouteGasModel] = await Promise.all([
-      v3GasModelPromise,
-      mixedRouteGasModelPromise,
-    ]);
+    const [v3GasModel] = await Promise.all([
+      v3GasModelPromise]);
 
     metric.putMetric(
       'GasModelCreation',
@@ -1536,7 +1534,7 @@ export class AlphaRouter
       MetricLoggerUnit.Milliseconds
     );
 
-    return [v3GasModel, mixedRouteGasModel];
+    return [v3GasModel];
   }
 
   // Note multiplications here can result in a loss of precision in the amounts (e.g. taking 50% of 101)
@@ -1654,12 +1652,12 @@ export class AlphaRouter
       if (routeAmount.protocol === Protocol.V3) {
         hasV3Route = true;
       }
-      if (routeAmount.protocol === Protocol.V1) {
-        hasV1Route = true;
-      }
-      if (routeAmount.protocol === Protocol.MIXED) {
-        hasMixedRoute = true;
-      }
+      // if (routeAmount.protocol === Protocol.V1) {
+      //   hasV1Route = true;
+      // }
+      // if (routeAmount.protocol === Protocol.MIXED) {
+      //   hasMixedRoute = true;
+      // }
     }
 
     if (hasMixedRoute && (hasV3Route || hasV1Route)) {

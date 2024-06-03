@@ -1,9 +1,9 @@
-import { Protocol } from '@pollum-io/router-sdk';
-import { Token } from '@pollum-io/sdk-core';
+import { Protocol } from 'routersdk18';
+import { Token } from 'sdkcore18';
 
-import { MixedRoute, V1Route, V3Route } from '../../../../routers';
+import { V3Route } from '../../../../routers';
 
-interface CachedRouteParams<Route extends V3Route | V1Route | MixedRoute> {
+interface CachedRouteParams<Route extends V3Route> {
   route: Route;
   percent: number;
 }
@@ -14,7 +14,7 @@ interface CachedRouteParams<Route extends V3Route | V1Route | MixedRoute> {
  * @export
  * @class CachedRoute
  */
-export class CachedRoute<Route extends V3Route | V1Route | MixedRoute> {
+export class CachedRoute<Route extends V3Route> {
   public readonly route: Route;
   public readonly percent: number;
 

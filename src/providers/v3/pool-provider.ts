@@ -1,10 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Token } from '@pollum-io/sdk-core';
-import { computePoolAddress, FeeAmount, Pool } from '@pollum-io/v3-sdk';
+import { Token } from 'sdkcore18';
+import { computePoolAddress, FeeAmount, Pool } from 'v3sdk18';
 import retry, { Options as RetryOptions } from 'async-retry';
 import _ from 'lodash';
 
-import { IPegasysV3PoolState__factory } from '../../types/v3/factories/IPegasysV3PoolState__factory';
+import { IUniswapV3PoolState__factory } from '../../types/v3/factories/IUniswapV3PoolState__factory';
 import { ChainId } from '../../util';
 import { V3_CORE_FACTORY_ADDRESSES } from '../../util/addresses';
 import { log } from '../../util/log';
@@ -247,7 +247,7 @@ export class V3PoolProvider implements IV3PoolProvider {
         TReturn
       >({
         addresses: poolAddresses,
-        contractInterface: IPegasysV3PoolState__factory.createInterface(),
+        contractInterface: IUniswapV3PoolState__factory.createInterface(),
         functionName: functionName,
         providerConfig,
       });

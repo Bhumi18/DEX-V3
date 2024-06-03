@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Protocol } from '@pollum-io/router-sdk';
-import { TradeType } from '@pollum-io/sdk-core';
+import { Protocol } from 'routersdk18';
+import { TradeType } from 'sdkcore18';
 import JSBI from 'jsbi';
 import _ from 'lodash';
 import FixedReverseHeap from 'mnemonist/fixed-reverse-heap';
@@ -50,7 +50,7 @@ export async function getBestSwapRoute(
       'Forcing mixed routes by filtering out other route types'
     );
     routesWithValidQuotes = _.filter(routesWithValidQuotes, (quotes) => {
-      return quotes.protocol === Protocol.MIXED;
+      return quotes.protocol !== Protocol.V3; // return quotes.protocol === Protocol.MIXED; false
     });
     if (!routesWithValidQuotes) {
       return null;

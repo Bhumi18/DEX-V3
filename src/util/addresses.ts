@@ -1,37 +1,37 @@
-import { Token } from '@pollum-io/sdk-core';
-import { FACTORY_ADDRESS } from '@pollum-io/v3-sdk';
+import { Token } from 'sdkcore18';
+// import { FACTORY_ADDRESS } from 'v3sdk18';
 
-import { ChainId, NETWORKS_WITH_SAME_UNISWAP_ADDRESSES } from './chains';
+import { ChainId } from './chains';
 
 export const V3_CORE_FACTORY_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap(FACTORY_ADDRESS),
+  [ChainId.MODE]: '0x5091730383fE325040813281231D323049Eeaf8b', // mode
 };
 
 export const QUOTER_V2_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap('0x4aa7D3a3D8025e653886EbD5f2e9416a7b4ADe22'),
+  [ChainId.MODE]: '0x9613da2D81495589CCe112CC4C7fC650A5eC2610', // mode
 };
 
-export const MIXED_ROUTE_QUOTER_V1_ADDRESSES: AddressMap = {
-  [ChainId.ROLLUX]: '0xD8EDc12630284A057461300dE5317b148F7F8926',
-};
+// export const MIXED_ROUTE_QUOTER_V1_ADDRESSES: AddressMap = {
+//   [ChainId.ROLLUX]: '0xD8EDc12630284A057461300dE5317b148F7F8926',
+// };
 
 export const UNISWAP_MULTICALL_ADDRESSES: AddressMap = {
-  [ChainId.ROLLUX]: '0x25DAE2f7ad027b29b4e968ecC899F8A8A0f54B2A',
-  [ChainId.ROLLUX_TANENBAUM]: '0x0fC3574BFff5FF644A11B7B13A70B484F8e01D08'
+  [ChainId.MODE]: '0xcd9845c3233Dbd3274Be6054f21CE26C79e5a65E', // mode
+  // [ChainId.ROLLUX_TANENBAUM]: '0x0fC3574BFff5FF644A11B7B13A70B484F8e01D08'
 };
 
 export const SWAP_ROUTER_02_ADDRESSES = (_chainId: number) => {
-  return '0x347E5995B99CB77dfbe50aDe97b155f1eCD953cD';
+  return '0x22dc8CA232debF877eFF0628FF9215519e8083f4'; // mode
 };
 
 export const OVM_GASPRICE_ADDRESS =
   '0x420000000000000000000000000000000000000F';
 export const ARB_GASINFO_ADDRESS = '0x000000000000000000000000000000000000006C';
-export const TICK_LENS_ADDRESS = '0x6dfd1ea91128733Dc96479b7d1b0F4bC36C31C44';
+export const TICK_LENS_ADDRESS = '0xE5a7A29FF8D7F6EEc07377b791F4F9db7f3FFDBC'; // mode
 export const NONFUNGIBLE_POSITION_MANAGER_ADDRESS =
-  '0x4dB158Eec5c5d63F9A09535882b835f36d3fd012';
-export const V3_MIGRATOR_ADDRESS = '0x2b75Ee991F4E5572451E186E5cd2148Ba4B286e5';
-export const MULTICALL2_ADDRESS = '0xc9E6E07CB460F36A6D5826f70647eff7e1823899';
+  '0xEF3e32154B5Fb96D56D339e655A5edf5f5661Af8'; // mode
+export const V3_MIGRATOR_ADDRESS = '0x2a8cC9911201FD188fDD641df81044C9a6F76B01'; // mode
+export const MULTICALL2_ADDRESS = '0x338d2F65468A2Ac6D51Af94BE3A45858a21e6615'; // mode
 
 export type AddressMap = { [chainId: number]: string };
 
@@ -39,9 +39,7 @@ export function constructSameAddressMap<T extends string>(
   address: T,
   additionalNetworks: ChainId[] = []
 ): { [chainId: number]: T } {
-  return NETWORKS_WITH_SAME_UNISWAP_ADDRESSES.concat(
-    additionalNetworks
-  ).reduce<{
+  return additionalNetworks.reduce<{
     [chainId: number]: T;
   }>((memo, chainId) => {
     memo[chainId] = address;
@@ -52,18 +50,18 @@ export function constructSameAddressMap<T extends string>(
 export const WETH9: {
   [chainId in ChainId]: Token;
 } = {
-  [ChainId.ROLLUX]: new Token(
-    ChainId.ROLLUX,
+  [ChainId.MODE]: new Token(
+    ChainId.MODE,
     '0x4200000000000000000000000000000000000006',
     18,
-    'WSYS',
-    'Wrapped Syscoin'
+    'WETH',
+    'Wrapped Ether'
   ),
-  [ChainId.ROLLUX_TANENBAUM]: new Token(
-    ChainId.ROLLUX_TANENBAUM,
-    '0x4200000000000000000000000000000000000006',
-    18,
-    'WSYS',
-    'Wrapped Syscoin'
-  ),
+  // [ChainId.ROLLUX_TANENBAUM]: new Token(
+  //   ChainId.ROLLUX_TANENBAUM,
+  //   '0x4200000000000000000000000000000000000006',
+  //   18,
+  //   'WSYS',
+  //   'Wrapped Syscoin'
+  // ),
 };

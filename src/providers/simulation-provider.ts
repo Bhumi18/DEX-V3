@@ -1,6 +1,6 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { TradeType } from '@pollum-io/sdk-core';
-import { PERMIT2_ADDRESS } from '@pollum-io/universal-router-sdk';
+import { TradeType } from 'sdkcore18';
+import { PERMIT2_ADDRESS } from 'universalroutersdk18';
 import { BigNumber } from 'ethers/lib/ethers';
 
 import { SwapOptions, SwapRoute, SwapType } from '../routers';

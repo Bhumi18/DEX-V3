@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Token } from '@pollum-io/sdk-core';
-import { TokenInfo, TokenList } from '@uniswap/token-lists';
+import { Token } from 'sdkcore18';
+import { TokenInfo, TokenList } from 'udonswap-token-lists';
 import axios from 'axios';
 import _ from 'lodash';
 
@@ -29,13 +29,10 @@ export interface ITokenListProvider {
 }
 
 export class CachingTokenListProvider
-  implements ITokenProvider, ITokenListProvider
-{
+  implements ITokenProvider, ITokenListProvider {
   private CACHE_KEY = (tokenInfo: TokenInfo) =>
-    `token-list-token-${this.chainId}/${this.tokenList.name}/${
-      this.tokenList.timestamp
-    }/${this.tokenList.version}/${tokenInfo.address.toLowerCase()}/${
-      tokenInfo.decimals
+    `token-list-token-${this.chainId}/${this.tokenList.name}/${this.tokenList.timestamp
+    }/${this.tokenList.version}/${tokenInfo.address.toLowerCase()}/${tokenInfo.decimals
     }/${tokenInfo.symbol}/${tokenInfo.name}`;
 
   private chainId: ChainId;
@@ -178,8 +175,8 @@ export class CachingTokenListProvider
 
     // We consider ETH as a regular ERC20 Token throughout this package. We don't use the NativeCurrency object from the sdk.
     // When we build the calldata for swapping we insert wrapping/unwrapping as needed.
-    if (_symbol == 'SYS') {
-      symbol = 'WSYS';
+    if (_symbol == 'ETH') {
+      symbol = 'WETH';
     }
 
     if (!this.chainSymbolToTokenInfo[this.chainId.toString()]) {
@@ -205,7 +202,7 @@ export class CachingTokenListProvider
 
     const tokenInfo: TokenInfo | undefined =
       this.chainAddressToTokenInfo[this.chainId.toString()]![
-        address.toLowerCase()
+      address.toLowerCase()
       ];
 
     if (!tokenInfo) {

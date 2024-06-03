@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Currency, Token, TradeType } from '@pollum-io/sdk-core';
-import { Pair } from '@pollum-io/v1-sdk';
-import { Pool } from '@pollum-io/v3-sdk';
+import { Currency, Token, TradeType } from 'sdkcore18';
+// import { Pair } from '@pollum-io/v1-sdk';
+import { Pool } from 'v3sdk18';
 import _ from 'lodash';
 
 import {
@@ -11,7 +11,7 @@ import {
   TokenValidationResult,
 } from '../../../providers';
 import { ChainId, CurrencyAmount, log, poolToString } from '../../../util';
-import { MixedRoute, V1Route, V3Route } from '../../router';
+import { V3Route } from '../../router';
 import { AlphaRouterConfig } from '../alpha-router';
 import { RouteWithValidQuote } from '../entities/route-with-valid-quote';
 import { CandidatePoolsBySelectionCriteria } from '../functions/get-candidate-pools';
@@ -26,7 +26,7 @@ import { GetQuotesResult, GetRoutesResult } from './model/results';
  * @abstract
  * @template Route
  */
-export abstract class BaseQuoter<Route extends V1Route | V3Route | MixedRoute> {
+export abstract class BaseQuoter<Route extends V3Route> {
   protected tokenProvider: ITokenProvider;
   protected chainId: ChainId;
   protected blockedTokenListProvider?: ITokenListProvider;
@@ -128,7 +128,7 @@ export abstract class BaseQuoter<Route extends V1Route | V3Route | MixedRoute> {
     );
   }
 
-  protected async applyTokenValidatorToPools<T extends Pool | Pair>(
+  protected async applyTokenValidatorToPools<T extends Pool>(
     pools: T[],
     isInvalidFn: (
       token: Currency,
